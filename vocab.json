@@ -1,0 +1,98 @@
+[
+  {
+    "term": "Algorithmic Governance",
+    "definition": "The use of algorithms and automated decision-making systems by governments and public institutions to manage, regulate, or deliver public services. Raises questions about accountability, transparency, and bias.",
+    "tags": ["digital government", "AI policy"],
+    "source": "Danaher et al., 2017"
+  },
+  {
+    "term": "Bureaucratic Discretion",
+    "definition": "The latitude granted to public officials to make judgment calls in applying rules and policies to specific cases. Central to street-level bureaucracy theory.",
+    "tags": ["public administration"],
+    "source": "Lipsky, 1980"
+  },
+  {
+    "term": "csQCA",
+    "definition": "Crisp Set Qualitative Comparative Analysis. A set-theoretic method that treats cases as combinations of conditions, identifying necessary and sufficient conditions for an outcome. Used for medium-N comparative policy research.",
+    "tags": ["methodology", "qualitative"],
+    "source": "Ragin, 1987"
+  },
+  {
+    "term": "Delphi Method",
+    "definition": "A structured expert elicitation technique using iterative rounds of questionnaires and controlled feedback to reach consensus on complex or uncertain topics. Often used in policy forecasting and framework development.",
+    "tags": ["methodology"],
+    "source": "Linstone & Turoff, 1975"
+  },
+  {
+    "term": "Digital Divide",
+    "definition": "The gap between individuals, households, or regions that have access to modern ICTs and those that do not. Encompasses not just access but also skills, usage, and outcomes.",
+    "tags": ["digital policy", "equity"],
+    "source": "van Dijk, 2006"
+  },
+  {
+    "term": "E-Government",
+    "definition": "The use of ICTs by government agencies to improve service delivery, enhance transparency, and increase citizen participation. Distinct from digital government in that it emphasizes front-end service portals rather than back-end transformation.",
+    "tags": ["digital government"],
+    "source": "UN E-Government Survey"
+  },
+  {
+    "term": "Government-as-a-Platform (GaaP)",
+    "definition": "A model of public administration in which government provides shared infrastructure, data, and APIs that allow public and private actors to build services on top of it — analogous to how app stores work.",
+    "tags": ["digital government", "public sector innovation"],
+    "source": "O'Reilly, 2010"
+  },
+  {
+    "term": "Iron Triangle",
+    "definition": "In public policy, the stable, mutually beneficial relationship between a legislative committee, a government agency, and an interest group that shapes policy in a specific domain, often at the expense of broader public interest.",
+    "tags": ["political science", "public policy"],
+    "source": "Freeman, 1955"
+  },
+  {
+    "term": "New Public Governance (NPG)",
+    "definition": "A paradigm emphasizing networks, co-production, and plural service delivery as alternatives to both traditional bureaucracy (Old Public Administration) and market mechanisms (New Public Management).",
+    "tags": ["public administration"],
+    "source": "Osborne, 2006"
+  },
+  {
+    "term": "Omnichannel Delivery",
+    "definition": "An approach to public service delivery that integrates multiple channels (online, mobile, in-person, phone) into a seamless citizen experience, ensuring consistent information and outcomes regardless of channel used.",
+    "tags": ["digital government", "service design"],
+    "source": ""
+  },
+  {
+    "term": "Pentahelix",
+    "definition": "A collaboration model extending the Triple Helix (government–academia–industry) by adding civil society and media as active stakeholders in innovation and policy development.",
+    "tags": ["public policy", "governance"],
+    "source": "Carayannis & Campbell, 2009"
+  },
+  {
+    "term": "Policy Window",
+    "definition": "A brief opportunity for policy change that opens when a problem, a political shift, and a viable solution converge simultaneously. Based on Kingdon's Multiple Streams Framework.",
+    "tags": ["public policy"],
+    "source": "Kingdon, 1984"
+  },
+  {
+    "term": "Seamless Governance",
+    "definition": "A model of public administration where government services are delivered proactively and in an integrated manner around life events, removing the burden from citizens to navigate fragmented agencies.",
+    "tags": ["digital government", "service design"],
+    "source": "Perri 6, 2004"
+  },
+  {
+    "term": "Shared Services",
+    "definition": "A model of organizational efficiency where multiple units or agencies consolidate common back-office functions (HR, finance, IT) into a single service entity, reducing duplication and costs.",
+    "tags": ["public sector innovation", "organizational design"],
+    "source": ""
+  },
+  {
+    "term": "Street-Level Bureaucracy",
+    "definition": "Public service workers (teachers, police, social workers) who interact directly with citizens and exercise significant discretion in applying policy. Their collective behavior effectively becomes de facto policy.",
+    "tags": ["public administration"],
+    "source": "Lipsky, 1980"
+  },
+  {
+    "term": "Wicked Problem",
+    "definition": "A social or policy problem that is difficult or impossible to solve due to incomplete information, contradictory requirements, and complex interdependencies. Contrasted with 'tame' problems that have clear solutions.",
+    "tags": ["public policy", "governance"],
+    "source": "Rittel & Webber, 1973"
+  }
+]

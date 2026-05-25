@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossary — Alvi Syahrina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1c1917;
+    --muted: #78716c;
+    --soft: #a8a29e;
+    --border: #e7e5e4;
+    --bg: #fafaf9;
+    --accent: #b45309;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+  }
+
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.7; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(250,250,249,0.92); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px;
+  }
+  .nav-brand { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 0.875rem; color: var(--muted); font-weight: 500; letter-spacing: 0.02em; text-transform: uppercase; }
+  .nav-links a:hover { color: var(--ink); text-decoration: none; }
+  .nav-links .active { color: var(--ink); }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 0 2rem; }
+
+  /* PAGE HEADER */
+  .page-header { padding: 4rem 0 2.5rem; border-bottom: 1px solid var(--border); }
+  .section-label { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--soft); margin-bottom: 1rem; }
+  .page-header h1 { font-family: var(--serif); font-size: 2.4rem; letter-spacing: -0.02em; margin-bottom: 0.75rem; }
+  .page-header p { color: var(--muted); font-size: 0.9rem; font-weight: 300; max-width: 580px; line-height: 1.6; }
+  .page-header p em { color: var(--ink); font-style: italic; }
+
+  /* A-Z INDEX */
+  .az-index {
+    position: sticky;
+    top: 56px;
+    z-index: 9;
+    background: rgba(250,250,249,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem;
+    margin: 0 -2rem;
+  }
+  .az-index a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    color: var(--muted);
+    transition: all 0.1s;
+  }
+  .az-index a:hover { background: var(--border); color: var(--ink); text-decoration: none; }
+  .az-index a.has-entries { color: var(--ink); }
+  .az-index a.empty { color: var(--border); cursor: default; pointer-events: none; }
+
+  /* SEARCH */
+  .search-wrap { padding: 1.5rem 0 0; }
+  .search-input {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    background: white;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--soft); }
+
+  /* STATS */
+  .stats { font-size: 0.75rem; color: var(--soft); margin-top: 0.5rem; }
+
+  /* GLOSSARY */
+  .glossary { padding: 2rem 0 5rem; }
+
+  .letter-group { margin-bottom: 2.5rem; scroll-margin-top: 120px; }
+  .letter-heading {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    color: var(--border);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .vocab-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .vocab-item:last-child { border-bottom: none; }
+
+  .vocab-term {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--ink);
+    line-height: 1.4;
+    padding-top: 0.1rem;
+  }
+  .vocab-right {}
+  .vocab-definition {
+    font-size: 0.875rem;
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+  .vocab-footer { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+  .vocab-source {
+    font-size: 0.72rem;
+    color: var(--soft);
+    font-style: italic;
+  }
+  .vocab-tags { display: flex; gap: 0.3rem; flex-wrap: wrap; }
+  .vocab-tag {
+    font-size: 0.65rem;
+    font-weight: 500;
+    padding: 0.15rem 0.5rem;
+    border-radius: 2px;
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+
+  .no-results { padding: 3rem 0; text-align: center; color: var(--soft); font-size: 0.875rem; }
+
+  footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 0.75rem; color: var(--soft); }
+
+  @media (max-width: 600px) {
+    .vocab-item { grid-template-columns: 1fr; gap: 0.4rem; }
+    .az-index { padding: 0.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+
+<nav>
+  <a class="nav-brand" href="/">Alvi Syahrina</a>
+  <ul class="nav-links">
+    <li><a href="/research.html">Research</a></li>
+    <li><a href="/glossary.html" class="active">Glossary</a></li>
+    <li><a href="https://substack.com/@syahrina" target="_blank">Writing</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <header class="page-header">
+    <p class="section-label">Vocabulary</p>
+    <h1>Glossary</h1>
+    <p>Transitioning from IT &amp; HCI to public policy meant learning a whole new vocabulary. These are terms from <em>public policy, political studies, and digital governance</em> that I've encountered along the way — defined in plain language.</p>
+  </header>
+</div>
+
+<!-- A-Z sticky bar (full width) -->
+<div class="az-index" id="az-index"></div>
+
+<div class="container">
+  <div class="search-wrap">
+    <input class="search-input" type="search" id="search" placeholder="Search terms, definitions, tags…" autocomplete="off">
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <div class="glossary" id="glossary"></div>
+</div>
+
+<footer>
+  &copy; 2026 Alvi Syahrina &middot; Universitas Gadjah Mada
+</footer>
+
+<script>
+  const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  let allVocab = [];
+
+  async function loadVocab() {
+    const res = await fetch('vocab.json');
+    allVocab = await res.json();
+    allVocab.sort((a, b) => a.term.localeCompare(b.term));
+    render(allVocab);
+    buildAZIndex(allVocab);
+  }
+
+  function buildAZIndex(vocab) {
+    const lettersWithEntries = new Set(vocab.map(v => v.term[0].toUpperCase()));
+    const az = document.getElementById('az-index');
+    az.innerHTML = ALPHABET.map(l => {
+      if (lettersWithEntries.has(l)) {
+        return `<a href="#letter-${l}" class="has-entries">${l}</a>`;
+      }
+      return `<a class="empty">${l}</a>`;
+    }).join('');
+  }
+
+  function render(vocab) {
+    const glossary = document.getElementById('glossary');
+    const stats = document.getElementById('stats');
+
+    if (vocab.length === 0) {
+      glossary.innerHTML = '<div class="no-results">No terms found.</div>';
+      stats.textContent = '';
+      return;
+    }
+
+    stats.textContent = `${vocab.length} term${vocab.length !== 1 ? 's' : ''}`;
+
+    // Group by first letter
+    const groups = {};
+    vocab.forEach(v => {
+      const letter = v.term[0].toUpperCase();
+      if (!groups[letter]) groups[letter] = [];
+      groups[letter].push(v);
+    });
+
+    glossary.innerHTML = Object.keys(groups).sort().map(letter => `
+      <div class="letter-group" id="letter-${letter}">
+        <div class="letter-heading">${letter}</div>
+        ${groups[letter].map(v => `
+          <div class="vocab-item">
+            <div class="vocab-term">${v.term}</div>
+            <div class="vocab-right">
+              <div class="vocab-definition">${v.definition}</div>
+              <div class="vocab-footer">
+                ${v.source ? `<span class="vocab-source">${v.source}</span>` : ''}
+                <div class="vocab-tags">
+                  ${v.tags.map(t => `<span class="vocab-tag">${t}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+  }
+
+  // Search
+  document.getElementById('search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase().trim();
+    if (!q) {
+      render(allVocab);
+      buildAZIndex(allVocab);
+      return;
+    }
+    const filtered = allVocab.filter(v =>
+      v.term.toLowerCase().includes(q) ||
+      v.definition.toLowerCase().includes(q) ||
+      v.tags.some(t => t.toLowerCase().includes(q))
+    );
+    render(filtered);
+    buildAZIndex(filtered);
+  });
+
+  loadVocab();
+</script>
+</body>
+</html>

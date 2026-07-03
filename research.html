@@ -89,9 +89,7 @@
   }
 
   .year-group { margin-bottom: 3.5rem; }
-  .year-marker {
-    display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;
-  }
+  .year-marker { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
   .year-marker span {
     font-family: var(--serif); font-size: 1.6rem; color: var(--border); letter-spacing: -0.02em;
     flex-shrink: 0;
@@ -118,29 +116,50 @@
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
   }
 
+  /* CARD IMAGE
+     Default: center crop. Adjust each image by changing --img-position and --img-zoom inline.
+     Examples:
+       style="--img-position: center 40%; --img-zoom: 1.12;"  focus higher, zoom in
+       style="--img-position: 70% center; --img-zoom: 1;"     focus right
+       class="card-image contain"                                  zoom out / show full image
+  */
   .card-image {
+    position: relative;
     width: 100%;
-    aspect-ratio: 16/9;
-    object-fit: cover;
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%);
     border-bottom: 1px solid var(--border);
     overflow: hidden;
   }
-  .card-image img { width: 100%; height: 100%; object-fit: cover; }
-  .card-image-placeholder {
+
+  .card-image img {
     width: 100%;
-    aspect-ratio: 16/9;
-    background: linear-gradient(135deg, #f5f5f4 0%, #e7e5e4 100%);
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--img-position, center center);
+    transform: scale(var(--img-zoom, 1));
+    transform-origin: var(--img-position, center center);
+    display: block;
+  }
+
+  .card-image.contain img {
+    object-fit: contain;
+    object-position: center center;
+    transform: none;
+    background: var(--bg);
+  }
+
+  .card-image.missing-image::before {
+    content: "Image pending";
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid var(--border);
-  }
-  .placeholder-icon {
-    width: 36px; height: 36px; opacity: 0.2;
+    color: var(--soft);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .card-body { padding: 1rem 1.1rem 1.1rem; flex: 1; display: flex; flex-direction: column; }
@@ -175,6 +194,9 @@
   }
 
   @media (max-width: 600px) {
+    nav { padding: 0 1rem; }
+    .nav-links { gap: 1rem; }
+    .container { padding: 0 1rem; }
     .cards-grid { grid-template-columns: 1fr; }
     .expertise-grid { flex-direction: column; gap: 1rem; }
   }
@@ -252,6 +274,9 @@
       <div class="cards-grid">
 
         <div class="card">
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/digital-sovereignty.jpg" alt="Strengthening Indonesia's Digital Government Sovereignty" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
+          </div>
           <div class="card-body">
             <div class="card-meta">
               <span class="tag tag-gov">Digital Government</span>
@@ -264,8 +289,8 @@
         </div>
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l4 4"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/gig-economy.jpg" alt="Impact of AI on Gig Economy Workers in Indonesia" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">
@@ -287,8 +312,8 @@
       <div class="cards-grid">
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/civil-servant.jpg" alt="Civil Servant Digital Competence Index" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">
@@ -302,8 +327,8 @@
         </div>
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/public-services.jpg" alt="Seamless Digital Public Services Ecosystem" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">
@@ -325,8 +350,8 @@
       <div class="cards-grid">
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/shared-services.jpg" alt="Shared Services Roadmap — Ministry of Finance" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">
@@ -348,8 +373,8 @@
       <div class="cards-grid">
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/unitrend.jpg" alt="Unitrend Policy Monitoring Dashboard" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">
@@ -363,8 +388,8 @@
         </div>
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/electoral-integrity.jpg" alt="Electoral Integrity in Indonesia" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">
@@ -378,8 +403,8 @@
         </div>
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/mental-revolution.jpg" alt="Mental Revolution National Movement Evaluation" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">
@@ -401,8 +426,8 @@
       <div class="cards-grid">
 
         <div class="card">
-          <div class="card-image-placeholder">
-            <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <div class="card-image" style="--img-position: center center; --img-zoom: 1;">
+            <img src="img/data-protection.jpg" alt="Data Protection Authority Institutional Strategy" loading="lazy" onerror="this.parentElement.classList.add('missing-image'); this.remove();">
           </div>
           <div class="card-body">
             <div class="card-meta">

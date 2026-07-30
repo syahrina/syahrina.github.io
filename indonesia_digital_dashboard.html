@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Posisi Indonesia — Indeks Digital Global</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:#F0F4F8;color:#0D1B2A;font-size:14px;line-height:1.6}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* HEADER */
+.hdr{background:#0B1829;color:#fff;padding:2rem 2rem 1.5rem}
+.hdr-inner{max-width:1080px;margin:0 auto}
+.hdr-tag{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#64B5F6;margin-bottom:.5rem}
+.hdr-title{font-size:24px;font-weight:700;margin-bottom:.25rem}
+.hdr-sub{font-size:13px;color:#90A4AE;margin-bottom:1.25rem}
+.hdr-chips{display:flex;gap:1rem;flex-wrap:wrap}
+.chip{font-size:11px;color:#B0BEC5;display:flex;align-items:center;gap:4px}
+.chip strong{color:#E0F2FE}
+
+/* LAYOUT */
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+section{padding:1.75rem 0}
+.sec-head{font-size:12px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;color:#64748B;margin-bottom:.75rem}
+
+/* DIM CARDS */
+.dim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:1.5rem}
+.dim-card{background:#fff;border:.5px solid #E2E8F0;border-radius:10px;padding:.85rem;border-top:3px solid}
+.dim-label{font-size:11px;font-weight:600;margin-bottom:.25rem}
+.dim-score{font-size:22px;font-weight:700;margin-bottom:.15rem}
+.dim-desc{font-size:10px;color:#94A3B8;line-height:1.4}
+.dim-bar-bg{background:#F1F5F9;border-radius:4px;height:5px;margin-top:.5rem}
+.dim-bar-fill{height:5px;border-radius:4px}
+
+/* SIGNAL */
+.sig{display:inline-block;width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:2px}
+.sig-green{background:#16A34A}
+.sig-amber{background:#D97706}
+.sig-red{background:#DC2626}
+
+/* FINDINGS BOX */
+.findings{background:#1E293B;color:#E2E8F0;border-radius:12px;padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.findings-title{font-size:12px;font-weight:600;color:#64B5F6;text-transform:uppercase;letter-spacing:.07em;margin-bottom:1rem}
+.finding-item{display:grid;grid-template-columns:auto 1fr;gap:10px;margin-bottom:.75rem;font-size:12px;line-height:1.5}
+.finding-icon{font-size:14px;margin-top:1px}
+.finding-text{color:#CBD5E1}
+.finding-text strong{color:#fff}
+
+/* INDEX TABLE */
+.idx-table{width:100%;border-collapse:collapse}
+.idx-table th{font-size:10px;font-weight:600;color:#94A3B8;text-transform:uppercase;letter-spacing:.06em;padding:.5rem .75rem;text-align:left;border-bottom:.5px solid #E2E8F0;background:#F8FAFC}
+.idx-table td{padding:.65rem .75rem;border-bottom:.5px solid #F1F5F9;vertical-align:middle}
+.idx-table tr:hover td{background:#FAFBFD}
+.idx-name{font-size:12px;font-weight:500;color:#0D1B2A;line-height:1.3}
+.idx-note-cell{font-size:11px;color:#64748B;line-height:1.4;max-width:280px}
+.warn-tag{display:inline-block;font-size:9px;padding:1px 5px;background:#FEF3C7;color:#92400E;border-radius:3px;margin-top:2px}
+.pbar-bg{background:#F1F5F9;border-radius:3px;height:6px;width:100px;overflow:hidden}
+.pbar-fill{height:6px;border-radius:3px}
+.pbar-green{background:#16A34A}
+.pbar-amber{background:#D97706}
+.pbar-red{background:#DC2626}
+.pctile-num{font-size:11px;font-weight:600;margin-bottom:2px}
+.rank-num{font-size:10px;color:#94A3B8}
+.val-cell{font-size:13px;font-weight:600;color:#0D1B2A;white-space:nowrap}
+.dim-badge{font-size:9px;font-weight:600;padding:2px 6px;border-radius:12px;white-space:nowrap}
+
+/* CHARTS */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1rem}
+@media(max-width:640px){.chart-grid{grid-template-columns:1fr}}
+.chart-box{background:#fff;border:.5px solid #E2E8F0;border-radius:10px;padding:1rem}
+.chart-title{font-size:12px;font-weight:600;color:#374151;margin-bottom:.75rem}
+.chart-sub{font-size:10px;color:#94A3B8;margin-bottom:.5rem}
+.radar-box{background:#fff;border:.5px solid #E2E8F0;border-radius:10px;padding:1.25rem;max-width:420px;margin:0 auto}
+
+/* FILTER */
+.filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.fbtn{font-size:11px;padding:4px 10px;border-radius:16px;border:.5px solid #CBD5E1;background:#fff;color:#64748B;cursor:pointer;font-family:inherit}
+.fbtn:hover,.fbtn.active{background:#0D1B2A;color:#fff;border-color:#0D1B2A}
+
+/* FOOTER */
+.site-footer{background:#0B1829;color:#475569;padding:1.5rem 2rem;margin-top:2.5rem;font-size:11px}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+/* PARADOX BOX */
+.paradox{background:#FEF2F2;border:.5px solid #FCA5A5;border-radius:10px;padding:1rem 1.25rem;margin-bottom:1rem}
+.paradox-title{font-size:12px;font-weight:600;color:#991B1B;margin-bottom:.5rem}
+.paradox-body{font-size:12px;color:#7F1D1D;line-height:1.6}
+.note-small{font-size:10px;color:#94A3B8;font-style:italic;margin-top:.25rem}
+</style>
+</head>
+<body>
+<h1 class="sr-only">Dashboard Posisi Indonesia dalam Indeks Digital Global</h1>
+
+<!-- DATA -->
+<script>const DATA = {"meta": {"country": "Indonesia", "updated": "2025-07", "peer_asean": ["Indonesia", "Malaysia", "Thailand", "Vietnam", "Philippines", "Singapore"]}, "dimensions": {"A": {"label": "Digital Competitiveness", "color": "#2563EB", "score": 50.1, "desc": "Posisi dalam hierarki ekonomi digital global"}, "B": {"label": "E-Government & GovTech", "color": "#7C3AED", "score": 74.9, "desc": "Kematangan digital sektor publik"}, "C": {"label": "Connectivity", "color": "#0D9488", "score": 57.3, "desc": "Infrastruktur dan akses digital"}, "D": {"label": "Cybersecurity", "color": "#DC2626", "score": 63.2, "desc": "Keamanan dan ketahanan siber"}, "E": {"label": "Data Governance", "color": "#D97706", "score": 51.9, "desc": "Tata kelola data dan kebebasan internet"}, "F": {"label": "Innovation & Human Capital", "color": "#475569", "score": 48.6, "desc": "Kapasitas inovasi dan SDM digital"}}, "indices": {"NRI": {"label": "Network Readiness Index", "dim": "A", "scale": "0–100", "idn": 53.84, "pctile": 63.9, "signal": "amber", "rank": "48/133", "note": "Above global median. Below Malaysia (57.9) and Thailand (56.1)", "benchmark": "Singapore=76.9, OECD avg~67", "peer": {"Malaysia": 57.88, "Thailand": 56.07, "Vietnam": 54.96, "Philippines": 49.93, "Singapore": 76.94}}, "IMD_WDCR": {"label": "IMD World Digital Competitiveness", "dim": "A", "scale": "Score", "idn": 56.76, "pctile": 26.1, "signal": "red", "rank": "51/67", "note": "Near bottom of 67 countries. Weak in Knowledge and Tech factors", "benchmark": "Top score ~100 (USA), ASEAN leader Singapore=79.5", "peer": {"Malaysia": null, "Thailand": null, "Vietnam": null, "Philippines": null, "Singapore": 79.5}}, "GII": {"label": "Global Innovation Index", "dim": "A", "scale": "0–100", "idn": 31.3, "pctile": 60.4, "signal": "amber", "rank": "55/139", "note": "Below ASEAN peers. Weak in R&D and knowledge output", "benchmark": "Singapore=59.9, Malaysia=40.6, Vietnam=37.1", "peer": {"Malaysia": 40.6, "Thailand": 36.7, "Vietnam": 37.1, "Philippines": 33.6, "Singapore": 59.9}}, "EGDI": {"label": "E-Government Development Index", "dim": "B", "scale": "0–1", "idn": 0.7991, "pctile": 66.8, "signal": "amber", "rank": "64/193", "note": "Very High category (≥0.75). Genuine achievement. Above Vietnam and Philippines", "benchmark": "Estonia=0.973, Thailand=0.84, Malaysia=0.81", "peer": {"Malaysia": 0.8111, "Thailand": 0.8351, "Vietnam": 0.7709, "Philippines": 0.7621, "Singapore": 0.9691}}, "GTMI": {"label": "GovTech Maturity Index", "dim": "B", "scale": "0–1", "idn": 0.817, "pctile": 80.3, "signal": "green", "rank": "39/198", "note": "Group A (Very High, ≥0.75). Indonesia's strongest area. Genuine strength", "benchmark": "Group A threshold=0.75. Singapore=0.833", "peer": {"Malaysia": 0.793, "Thailand": 0.879, "Vietnam": 0.682, "Philippines": 0.733, "Singapore": 0.833}}, "DCEI": {"label": "Digital Citizen Engagement", "dim": "B", "scale": "0–1", "idn": 0.822, "pctile": 81.3, "signal": "green", "rank": "37/198", "note": "Open data + citizen platforms. Strong performance", "benchmark": "Group A. Vietnam=0.76, Philippines=0.58", "peer": {"Malaysia": 0.671, "Thailand": 0.94, "Vietnam": 0.398, "Philippines": 0.577, "Singapore": 0.851}}, "Internet_pct": {"label": "Internet Users (% population)", "dim": "C", "scale": "0–100%", "idn": 73.0, "pctile": 40.8, "signal": "amber", "rank": "125/211", "note": "73% penetration. Below G20 developing average. Large rural gap", "benchmark": "Malaysia=91%, Thailand=91%, Vietnam=84%", "peer": {"Malaysia": 91.0, "Thailand": 91.0, "Vietnam": 84.0, "Philippines": 84.0, "Singapore": 94.0}}, "ICT_afford": {"label": "ICT Affordability", "dim": "C", "scale": "0–100", "idn": 100.0, "pctile": 98.5, "signal": "green", "rank": "1/66", "note": "Internet is affordable by A4AI benchmark (<2% GNI/cap). Policy success", "benchmark": "Global target: <2% GNI per capita. Indonesia meets this", "peer": {"Malaysia": null, "Thailand": null, "Vietnam": null, "Philippines": null, "Singapore": null}}, "Speedtest": {"label": "Speedtest (Ookla)", "dim": "C", "scale": "Mbps", "idn": 42.79, "pctile": 26.3, "signal": "red", "rank": "115/156", "note": "Below global median. Fixed broadband quality is weak. Mobile better", "benchmark": "Global median ~90 Mbps. Malaysia=161, Singapore=406", "peer": {"Malaysia": 161.18, "Thailand": 272.65, "Vietnam": 271.95, "Philippines": 106.71, "Singapore": 406.14}}, "GSMA_MCI": {"label": "GSMA Mobile Connectivity Index", "dim": "C", "scale": "0–100", "idn": 76.32, "pctile": 67.1, "signal": "amber", "rank": "57/173", "note": "Above 70 threshold. Mobile connectivity readiness is decent", "benchmark": "Singapore=93.4, Malaysia=80.3, Thailand=78.6", "peer": {"Malaysia": 80.305, "Thailand": 78.572, "Vietnam": 79.455, "Philippines": 71.538, "Singapore": 93.387}}, "GCI": {"label": "Global Cybersecurity Index", "dim": "D", "scale": "0–100", "idn": 97.5, "pctile": 99.5, "signal": "green", "rank": "1/190", "note": "⚠️ Tier 1 = highest commitment to cybersecurity. But this measures legal/institutional commitment, NOT actual security outcomes", "benchmark": "Tier 1 = 97.5, Tier 2 = 90, Tier 3 = 70. Indonesia=Tier 1", "peer": {"Malaysia": 97.5, "Thailand": 97.5, "Vietnam": 97.5, "Philippines": 90.0, "Singapore": 97.5}}, "FOTN": {"label": "Freedom on the Net", "dim": "E", "scale": "0–100", "idn": 16.0, "pctile": 38.9, "signal": "red", "rank": "44/72", "note": "Score 16 = 'Not Free' (0–39=Not Free). Restrictions on online speech, blocking, surveillance", "benchmark": "<40=Not Free, 40–69=Partly Free, ≥70=Free. Vietnam=4, China=0", "peer": {"Malaysia": 20.0, "Thailand": 9.0, "Vietnam": 4.0, "Philippines": 21.0, "Singapore": 17.0}}, "GCT": {"label": "UNCTAD Global Cyberlaw Tracker", "dim": "E", "scale": "0–100", "idn": 100.0, "pctile": 99.5, "signal": "green", "rank": "1/193", "note": "All 4 digital laws exist: cybercrime, e-commerce, consumer protection, data protection. Legal framework complete", "benchmark": "100=all 4 laws. Most G20 countries score 80–100", "peer": {"Malaysia": 100.0, "Thailand": 100.0, "Vietnam": 100.0, "Philippines": 100.0, "Singapore": 80.0}}, "CBDF": {"label": "Cross-Border Data Flow", "dim": "E", "scale": "1–5 (1=open)", "idn": 3.0, "pctile": 8.1, "signal": "red", "rank": "79/86", "note": "Score 3 = Highly Restrictive. Indonesia among world's most restrictive for data flows. Relevant to digital sovereignty debate", "benchmark": "1=Open, 2=Relatively Open, 3=Restrictive, 4=Highly Restrictive, 5=Extremely Restrictive", "peer": {"Malaysia": null, "Thailand": null, "Vietnam": null, "Philippines": null, "Singapore": null}}, "ODIN": {"label": "Open Data Inventory", "dim": "E", "scale": "0–100", "idn": 74.0, "pctile": 81.6, "signal": "green", "rank": "36/196", "note": "Good coverage and openness of national statistics (BPS). Top quartile globally", "benchmark": "≥80=excellent, Indonesia=74=decent. Estonia=92, Denmark=89", "peer": {"Malaysia": null, "Thailand": null, "Vietnam": null, "Philippines": null, "Singapore": null}}, "RuleOfLaw": {"label": "Rule of Law: Regulatory Enforcement", "dim": "E", "scale": "0–1", "idn": 0.58, "pctile": 67.8, "signal": "amber", "rank": "46/143", "note": "Moderate regulatory enforcement quality. Room for improvement in digital regulation implementation", "benchmark": "0.58 = upper-middle range. Singapore=0.86", "peer": {"Malaysia": null, "Thailand": null, "Vietnam": null, "Philippines": null, "Singapore": null}}, "PISA": {"label": "PISA (avg reading/math/science)", "dim": "F", "scale": "0–1000", "idn": 369.0, "pctile": 12.9, "signal": "red", "rank": "74/85", "note": "⚠️ Critically low. OECD average=490. Indonesia is 121 points below average. Structural barrier for digital economy", "benchmark": "OECD avg=490, Vietnam=467, China=579, Singapore=560", "peer": {"Malaysia": 404.4, "Thailand": 394.0, "Vietnam": 467.9, "Philippines": 352.5, "Singapore": 559.6}}, "Grad_SE": {"label": "Graduates in Science & Engineering", "dim": "F", "scale": "% of total grads", "idn": 44.9, "pctile": 92.3, "signal": "green", "rank": "10/130", "note": "Top 10 globally in STEM graduate share. Quantity is high — quality mismatch with PISA suggests pipeline issue", "benchmark": "Top 10 globally. But matched against PISA 369, quality gap is significant", "peer": {"Malaysia": 41.1, "Thailand": 30.1, "Vietnam": 44.8, "Philippines": 22.6, "Singapore": 35.9}}, "RD_GDP": {"label": "R&D Expenditure (% GDP)", "dim": "F", "scale": "% GDP", "idn": 0.3, "pctile": 42.5, "signal": "amber", "rank": "73/127", "note": "0.3% GDP is critically low for a G20 economy. Malaysia=1%, South Korea=5%, OECD avg=2.5%", "benchmark": "G20 avg~2%, Malaysia=1%, Target for upper-middle income: ≥1%", "peer": {"Malaysia": 1.0, "Thailand": 1.2, "Vietnam": 0.4, "Philippines": 0.3, "Singapore": 1.8}}, "Patents": {"label": "Patents per bn PPP$ GDP", "dim": "F", "scale": "count/bn$", "idn": 0.4, "pctile": 46.7, "signal": "amber", "rank": "73/137", "note": "Very low innovation output per unit of economic activity. Malaysia=0.7, Korea=6.6", "benchmark": "Korea=6.6, Singapore=1.9, Malaysia=0.7, Indonesia=0.4", "peer": {"Malaysia": 0.7, "Thailand": 0.4, "Vietnam": 0.7, "Philippines": 0.6, "Singapore": 1.9}}}};</script>
+
+<!-- HEADER -->
+<header class="hdr">
+<div class="hdr-inner">
+  <div class="hdr-tag">Kajian Transformasi Digital · Komdigi · Juli 2025</div>
+  <h2 class="hdr-title">🇮🇩 Posisi Indonesia dalam Indeks Digital Global</h2>
+  <p class="hdr-sub">Analisis berbasis persentil global — 20 indeks, 6 dimensi, vs. 5 peers ASEAN</p>
+  <div class="hdr-chips">
+    <div class="chip"><span class="sig sig-green"></span><strong>7</strong> indeks kuat (≥75th pctile)</div>
+    <div class="chip"><span class="sig sig-amber"></span><strong>8</strong> indeks menengah (40–75th)</div>
+    <div class="chip"><span class="sig sig-red"></span><strong>5</strong> indeks perlu perhatian (&lt;40th)</div>
+    <div class="chip">Data: <strong>2023–2024</strong></div>
+  </div>
+</div>
+</header>
+
+<div class="wrap">
+
+<!-- DIMENSION SCORES -->
+<section>
+  <div class="sec-head">Skor per dimensi (rata-rata persentil global)</div>
+  <div class="dim-grid" id="dimGrid"></div>
+
+  <!-- RADAR -->
+  <div class="radar-box">
+    <div class="chart-title" style="text-align:center">Profil multidimensi Indonesia</div>
+    <div class="chart-sub" style="text-align:center">Persentil global per dimensi (0–100, lebih tinggi = lebih baik)</div>
+    <canvas id="radarChart" style="max-height:300px"></canvas>
+  </div>
+</section>
+
+<!-- KEY FINDINGS -->
+<section>
+  <div class="sec-head">Temuan kunci</div>
+
+  <div class="paradox">
+    <div class="paradox-title">⚡ Paradoks Indonesia: Komitmen tinggi, outcome belum setara</div>
+    <div class="paradox-body">Indonesia mencapai Tier 1 GCI (99.5th percentile) dan GCT=100 — kerangka hukum dan komitmen siber tertinggi secara global. Namun di sisi yang sama, Freedom on the Net hanya 16/100 (kategori "Not Free", peringkat 44/72), dan Cross-Border Data Flow dikategorikan "Highly Restrictive" (peringkat ke-79 dari 86). Ini bukan kontradiksi — ini adalah pilihan kebijakan yang disengaja. Pertanyaannya bukan apakah ini baik atau buruk, melainkan: apa trade-off dari pilihan ini?</div>
+  </div>
+
+  <div class="findings">
+    <div class="findings-title">5 insight dari data</div>
+
+    <div class="finding-item">
+      <div class="finding-icon">🏛️</div>
+      <div class="finding-text"><strong>GovTech adalah kekuatan nyata Indonesia.</strong> GTMI 0.817 (80th pctile, Group A), DCEI 0.822 (81st pctile), ODIN 74/100 (82nd pctile) — semuanya top quartile global. Ini genuine achievement, bukan artefak pengukuran.</div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-icon">📚</div>
+      <div class="finding-text"><strong>PISA 369 adalah krisis struktural jangka panjang.</strong> Indonesia berada di 13th percentile (74/85 negara, 121 poin di bawah rata-rata OECD=490). Vietnam yang lebih miskin mencapai 467. Fondasi SDM untuk ekonomi digital bermasalah, meski % lulusan STEM tinggi (92nd pctile) — ini quantity vs quality gap.</div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-icon">🔬</div>
+      <div class="finding-text"><strong>R&D 0.3% GDP adalah bottleneck inovasi.</strong> Malaysia=1%, Thailand=1.2%, Singapore=1.8%, OECD avg=2.5%. Tanpa investasi R&D yang signifikan, Indonesia akan tetap di posisi periphery — mengkonsumsi teknologi yang diproduksi negara lain.</div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-icon">📡</div>
+      <div class="finding-text"><strong>Connectivity: affordable tapi lambat.</strong> ICT Affordability 100/100 (1st globally, benchmark terpenuhi) namun Speedtest hanya 42.79 Mbps (26th pctile, peringkat 115/156). Akses ada, kualitas belum. Malaysia=161 Mbps, Thailand=272 Mbps, Vietnam=272 Mbps.</div>
+    </div>
+
+    <div class="finding-item">
+      <div class="finding-icon">🌐</div>
+      <div class="finding-text"><strong>Digital Competitiveness tertinggal dari peers ASEAN.</strong> IMD WDCR rank 51/67 (26th pctile) — Indonesia hampir di bawah semua negara dalam sampel. NRI 53.84 masih di bawah Malaysia (57.9) dan Thailand (56.1). GII=31.3 jauh di bawah Malaysia (40.6) dan Vietnam (37.1).</div>
+    </div>
+  </div>
+</section>
+
+<!-- PEER CHART -->
+<section>
+  <div class="sec-head">Perbandingan ASEAN — indeks pilihan</div>
+  <div class="chart-grid" id="peerCharts"></div>
+</section>
+
+<!-- INDEX TABLE -->
+<section>
+  <div class="sec-head">Semua indeks — posisi Indonesia</div>
+  <div class="filter-bar" id="filterBar">
+    <button class="fbtn active" data-dim="all">Semua</button>
+    <button class="fbtn" data-dim="A">A · Competitiveness</button>
+    <button class="fbtn" data-dim="B">B · E-Government</button>
+    <button class="fbtn" data-dim="C">C · Connectivity</button>
+    <button class="fbtn" data-dim="D">D · Cybersecurity</button>
+    <button class="fbtn" data-dim="E">E · Data Governance</button>
+    <button class="fbtn" data-dim="F">F · Innovation</button>
+  </div>
+  <div style="overflow-x:auto;border-radius:10px;border:.5px solid #E2E8F0">
+  <table class="idx-table" id="idxTable">
+    <thead>
+      <tr>
+        <th style="width:14px"></th>
+        <th>Indeks</th>
+        <th>Nilai Indonesia</th>
+        <th>Persentil global</th>
+        <th>Rank</th>
+        <th>Konteks &amp; interpretasi</th>
+      </tr>
+    </thead>
+    <tbody id="idxBody"></tbody>
+  </table>
+  </div>
+  <p class="note-small" style="margin-top:.5rem;padding:0 .25rem">* Persentil dihitung dari seluruh negara dalam dataset masing-masing indeks. Nilai lebih tinggi = posisi lebih baik (sudah disesuaikan untuk indeks "lower is better"). ⚠️ = catatan metodologi penting.</p>
+</section>
+
+</div>
+
+<footer class="site-footer">
+<div class="footer-inner">
+  <span>Posisi Indonesia dalam Indeks Digital Global · Kajian Komdigi · Juli 2025</span>
+  <span>Data: ITU, World Bank, UN DESA, Portulans/Oxford, IMD, WIPO, OECD, Freedom House, UNCTAD, Open Data Watch, WJP · Dianalisis dari Excel Policy Paper V5</span>
+</div>
+</footer>
+
+<script>
+const D = DATA;
+
+// Dim colors
+const dimColors = {A:'#2563EB',B:'#7C3AED',C:'#0D9488',D:'#DC2626',E:'#D97706',F:'#475569'};
+const dimBg = {A:'#DBEAFE',B:'#EDE9FE',C:'#CCFBF1',D:'#FEE2E2',E:'#FEF3C7',F:'#F1F5F9'};
+const dimText = {A:'#1D4ED8',B:'#6D28D9',C:'#0F766E',D:'#B91C1C',E:'#B45309',F:'#374151'};
+const sigColor = {green:'#16A34A',amber:'#D97706',red:'#DC2626'};
+
+// Build dim cards
+const dimGrid = document.getElementById('dimGrid');
+for(const [k,v] of Object.entries(D.dimensions)){
+  const card = document.createElement('div');
+  card.className = 'dim-card';
+  card.style.borderTopColor = v.color;
+  const scoreColor = v.score >= 75 ? '#16A34A' : v.score >= 40 ? '#D97706' : '#DC2626';
+  card.innerHTML = `
+    <div class="dim-label" style="color:${v.color}">${k} · ${v.label}</div>
+    <div class="dim-score" style="color:${scoreColor}">${v.score}<span style="font-size:12px;color:#94A3B8">th</span></div>
+    <div class="dim-desc">${v.desc}</div>
+    <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:${v.score}%;background:${scoreColor}"></div></div>
+  `;
+  dimGrid.appendChild(card);
+}
+
+// Radar chart
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+const dims = Object.values(D.dimensions);
+new Chart(radarCtx, {
+  type:'radar',
+  data:{
+    labels: dims.map(d=>d.label),
+    datasets:[{
+      label:'Indonesia',
+      data: dims.map(d=>d.score),
+      backgroundColor:'rgba(37,99,235,0.12)',
+      borderColor:'#2563EB',
+      borderWidth:2,
+      pointBackgroundColor:'#2563EB',
+      pointRadius:4,
+      pointHoverRadius:6
+    }]
+  },
+  options:{
+    responsive:true,
+    scales:{r:{
+      min:0,max:100,
+      ticks:{stepSize:25,font:{size:9},color:'#94A3B8',backdropColor:'transparent'},
+      grid:{color:'#E2E8F0'},
+      pointLabels:{font:{size:10,weight:'500'},color:'#374151'},
+      angleLines:{color:'#E2E8F0'}
+    }},
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`Persentil: ${ctx.raw}th`}}}
+  }
+});
+
+// Peer bar charts
+const peerIndices = [
+  {id:'NRI',label:'Network Readiness Index',scale:'0–100'},
+  {id:'EGDI',label:'E-Gov Development Index',scale:'0–1'},
+  {id:'GTMI',label:'GovTech Maturity Index',scale:'0–1'},
+  {id:'FOTN',label:'Freedom on the Net',scale:'0–100'},
+  {id:'GII',label:'Global Innovation Index',scale:'0–100'},
+  {id:'PISA',label:'PISA (reading/math/science)',scale:'0–1000'},
+  {id:'Internet_pct',label:'Internet Users (%)',scale:'%'},
+  {id:'Speedtest',label:'Speedtest Download',scale:'Mbps'}
+];
+
+const peerNames = ['Indonesia','Malaysia','Thailand','Vietnam','Philippines','Singapore'];
+const peerColors = ['#2563EB','#0D9488','#D97706','#DC2626','#7C3AED','#475569'];
+
+const peerGrid = document.getElementById('peerCharts');
+peerIndices.forEach(pi=>{
+  const box = document.createElement('div');
+  box.className = 'chart-box';
+  box.innerHTML = `<div class="chart-title">${pi.label}</div><div class="chart-sub" style="margin-bottom:0">${pi.scale}</div><canvas id="pc_${pi.id}" style="max-height:160px"></canvas>`;
+  peerGrid.appendChild(box);
+
+  const vals = peerNames.map(c=>{
+    if(c==='Indonesia') return D.indices[pi.id]?.idn??null;
+    return D.indices[pi.id]?.peer?.[c]??null;
+  });
+
+  setTimeout(()=>{
+    const ctx = document.getElementById('pc_'+pi.id).getContext('2d');
+    new Chart(ctx,{
+      type:'bar',
+      data:{
+        labels:peerNames.map(n=>n==='Indonesia'?'🇮🇩 IDN':n.substring(0,3).toUpperCase()),
+        datasets:[{
+          data:vals,
+          backgroundColor:peerColors.map((c,i)=>peerNames[i]==='Indonesia'?c:'#CBD5E1'),
+          borderRadius:3
+        }]
+      },
+      options:{
+        responsive:true,
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw!=null?ctx.raw:'n/a'}}},
+        scales:{
+          x:{grid:{display:false},ticks:{font:{size:9}}},
+          y:{grid:{color:'#F1F5F9'},ticks:{font:{size:9},maxTicksLimit:4}}
+        }
+      }
+    });
+  },50);
+});
+
+// Index table
+const tbody = document.getElementById('idxBody');
+function renderTable(dimFilter){
+  tbody.innerHTML='';
+  for(const [id,idx] of Object.entries(D.indices)){
+    if(dimFilter!=='all' && idx.dim!==dimFilter) continue;
+    const sig = idx.signal;
+    const color = dimColors[idx.dim];
+    const bg = dimBg[idx.dim];
+    const txt = dimText[idx.dim];
+    const hasWarn = idx.note.startsWith('⚠️');
+    const pctW = Math.min(100,idx.pctile);
+
+    const tr = document.createElement('tr');
+    tr.dataset.dim = idx.dim;
+    tr.innerHTML = `
+      <td><span class="sig sig-${sig}"></span></td>
+      <td>
+        <div class="idx-name">${idx.label}</div>
+        <span class="dim-badge" style="background:${bg};color:${txt};margin-top:3px;display:inline-block">${idx.dim} · ${D.dimensions[idx.dim].label}</span>
+        <div style="font-size:10px;color:#94A3B8;margin-top:2px">Skala: ${idx.scale}</div>
+      </td>
+      <td class="val-cell">${typeof idx.idn==='number'?(idx.idn>=1?idx.idn.toFixed(idx.idn>10?1:2):idx.idn.toFixed(3)):'n/a'}</td>
+      <td>
+        <div class="pctile-num" style="color:${sigColor[sig]}">${idx.pctile}th</div>
+        <div class="pbar-bg"><div class="pbar-fill pbar-${sig}" style="width:${pctW}%"></div></div>
+      </td>
+      <td class="rank-num">${idx.rank}</td>
+      <td class="idx-note-cell">
+        ${idx.note}
+        ${hasWarn?'<div class="warn-tag">Metodologi — baca referensi</div>':''}
+        <div style="font-size:10px;color:#94A3B8;margin-top:2px">${idx.benchmark}</div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  }
+}
+renderTable('all');
+
+// Filter
+document.getElementById('filterBar').addEventListener('click',e=>{
+  const btn = e.target.closest('.fbtn');
+  if(!btn) return;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable(btn.dataset.dim);
+});
+</script>
+</body>
+</html>

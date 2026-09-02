@@ -1,0 +1,1390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artificial Intelligence for Research — Workshop Wiki</title>
+<style>
+  :root{
+    --paper:#F6F4EE;        /* warm off-white paper */
+    --paper-2:#EFEADF;      /* recessed panel */
+    --ink:#22201B;          /* dark warm ink */
+    --ink-soft:#5C5749;     /* muted caption ink */
+    --accent:#14524E;       /* deep petrol/teal — primary */
+    --accent-2:#0E3B38;     /* darker teal for depth */
+    --accent-soft:#E1ECE9;  /* pale teal wash */
+    --warm:#A96E24;         /* ochre / amber — secondary */
+    --warm-soft:#F1E5CE;    /* pale amber wash */
+    --rule:#D9D3C4;         /* hairline */
+    --rule-2:#C7C0AE;
+    --danger:#8F3A2E;       /* muted brick, used sparingly for warnings */
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --measure: 74ch;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--serif);font-size:18px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+
+  /* ---------- Top navigation ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:50;background:rgba(246,244,238,.92);
+    backdrop-filter:saturate(120%) blur(6px);
+    border-bottom:1px solid var(--rule);
+  }
+  .topbar-inner{
+    max-width:1180px;margin:0 auto;padding:.55rem 1.25rem;
+    display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap;
+  }
+  .brand{font-family:var(--sans);font-weight:700;letter-spacing:.01em;font-size:.98rem;color:var(--accent);display:flex;align-items:center;gap:.55rem}
+  .brand svg{display:block}
+  .brand .sub{font-weight:500;color:var(--ink-soft);font-size:.82rem}
+  .pagenav{margin-left:auto;display:flex;gap:.4rem;background:var(--paper-2);padding:.28rem;border-radius:999px;border:1px solid var(--rule)}
+  .pagenav button{
+    font-family:var(--sans);font-size:.83rem;font-weight:600;letter-spacing:.01em;
+    border:0;background:transparent;color:var(--ink-soft);
+    padding:.42rem .95rem;border-radius:999px;cursor:pointer;transition:background .18s,color .18s;
+  }
+  .pagenav button .num{opacity:.6;margin-right:.4em;font-variant-numeric:tabular-nums}
+  .pagenav button[aria-current="true"]{background:var(--accent);color:#fff}
+  .pagenav button:focus-visible{outline:2.5px solid var(--warm);outline-offset:2px}
+
+  /* ---------- Layout ---------- */
+  .page{display:none}
+  .page.is-active{display:block}
+  @media print{.page{display:block !important}.topbar,.toc{display:none !important}}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 1.25rem}
+  .grid{display:grid;grid-template-columns:250px minmax(0,1fr);gap:3rem;align-items:start;padding:2.4rem 0 4rem}
+  @media (max-width:920px){.grid{grid-template-columns:1fr;gap:1.4rem;padding-top:1.4rem}}
+
+  /* ---------- Table of contents ---------- */
+  .toc{position:sticky;top:70px;font-family:var(--sans);font-size:.86rem;line-height:1.4}
+  @media (max-width:920px){
+    .toc{position:static;background:var(--paper-2);border:1px solid var(--rule);border-radius:12px;padding:1rem 1.15rem}
+    .toc details{margin:0}
+  }
+  .toc .toc-label{text-transform:uppercase;letter-spacing:.14em;font-size:.7rem;color:var(--warm);font-weight:700;margin:0 0 .7rem}
+  .toc ol{list-style:none;margin:0;padding:0;counter-reset:toc}
+  .toc li{margin:.12rem 0}
+  .toc a{display:block;color:var(--ink-soft);text-decoration:none;padding:.28rem .5rem;border-left:2px solid transparent;border-radius:0 5px 5px 0;transition:color .15s,border-color .15s,background .15s}
+  .toc a:hover{color:var(--accent);background:var(--accent-soft);border-left-color:var(--accent)}
+  .toc a .n{color:var(--warm);font-variant-numeric:tabular-nums;font-weight:600;margin-right:.5em}
+
+  /* ---------- Content column ---------- */
+  .content{max-width:var(--measure)}
+  .content > *{overflow-wrap:break-word}
+  .eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:.16em;font-size:.72rem;font-weight:700;color:var(--warm);margin:0 0 .5rem}
+  h1.page-title{font-family:var(--sans);font-weight:800;font-size:2.35rem;line-height:1.1;letter-spacing:-.01em;margin:.1rem 0 .5rem;color:var(--accent-2)}
+  @media (max-width:520px){h1.page-title{font-size:1.85rem}}
+  .lede{font-size:1.18rem;line-height:1.55;color:var(--ink);margin:0 0 1.2rem}
+  .thesis-band{
+    border:1px solid var(--accent);background:var(--accent-soft);border-radius:12px;
+    padding:1.05rem 1.2rem;margin:1.4rem 0 2rem;font-size:1.02rem;
+  }
+  .thesis-band .k{font-family:var(--sans);font-weight:800;color:var(--accent-2);letter-spacing:.02em;display:block;font-size:.74rem;text-transform:uppercase;margin-bottom:.35rem}
+  section.sec{padding-top:1.4rem;margin-top:1.4rem}
+  section.sec + section.sec{border-top:1px solid var(--rule)}
+  h2{font-family:var(--sans);font-weight:750;font-weight:700;font-size:1.6rem;line-height:1.15;letter-spacing:-.005em;color:var(--accent-2);margin:1.4rem 0 .6rem;scroll-margin-top:80px}
+  h2 .h-num{color:var(--warm);font-weight:800;margin-right:.5rem;font-variant-numeric:tabular-nums}
+  h3{font-family:var(--sans);font-weight:700;font-size:1.16rem;color:var(--ink);margin:1.6rem 0 .4rem;scroll-margin-top:80px}
+  h4{font-family:var(--sans);font-weight:700;font-size:1rem;color:var(--accent-2);margin:1.2rem 0 .3rem;letter-spacing:.01em}
+  p{margin:0 0 1rem}
+  a.ref{color:var(--accent);text-decoration:none;font-variant-position:super;font-size:.72em;font-weight:700;font-family:var(--sans);padding:0 .05em;vertical-align:super;line-height:0}
+  a.ref:hover{text-decoration:underline}
+  strong{font-weight:700}
+  em{font-style:italic}
+  .content ul,.content ol.body{margin:0 0 1.1rem;padding-left:1.3rem}
+  .content li{margin:.35rem 0}
+  code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);border:1px solid var(--rule);border-radius:5px;padding:.05em .38em}
+
+  /* ---------- Callout boxes ---------- */
+  .callout{border-radius:12px;padding:1rem 1.15rem 1.05rem;margin:1.5rem 0;font-size:.97rem;line-height:1.55}
+  .callout .cap{font-family:var(--sans);text-transform:uppercase;letter-spacing:.13em;font-size:.68rem;font-weight:800;display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+  .callout p:last-child{margin-bottom:0}
+  .callout.def{background:var(--accent-soft);border:1px solid #B9D4CF}
+  .callout.def .cap{color:var(--accent-2)}
+  .callout.note{background:var(--paper-2);border:1px solid var(--rule-2)}
+  .callout.note .cap{color:var(--ink-soft)}
+  .callout.activity{background:var(--warm-soft);border:1px solid #E0C79B}
+  .callout.activity .cap{color:var(--warm)}
+  .callout .cap .dot{width:.55rem;height:.55rem;border-radius:50%;background:currentColor;display:inline-block}
+  .callout.warn{background:#F3E4E0;border:1px solid #D9B3AA}
+  .callout.warn .cap{color:var(--danger)}
+
+  /* ---------- Figures ---------- */
+  figure.fig{margin:1.8rem 0;padding:0}
+  figure.fig .frame{background:#FBFAF6;border:1px solid var(--rule);border-radius:14px;padding:1.15rem 1.15rem .6rem;overflow-x:auto}
+  figure.fig svg{display:block;width:100%;height:auto;max-width:100%}
+  figure.fig figcaption{font-family:var(--sans);font-size:.82rem;color:var(--ink-soft);line-height:1.45;margin-top:.7rem;padding-left:.1rem}
+  figure.fig figcaption b{color:var(--accent-2);font-weight:700}
+
+  /* ---------- Tables ---------- */
+  .tablewrap{overflow-x:auto;margin:1.6rem 0}
+  table.tbl{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:.86rem;line-height:1.4;min-width:520px}
+  table.tbl caption{caption-side:top;text-align:left;font-family:var(--sans);font-size:.82rem;color:var(--ink-soft);margin-bottom:.55rem;font-weight:600}
+  table.tbl th,table.tbl td{text-align:left;padding:.6rem .7rem;border-bottom:1px solid var(--rule);vertical-align:top}
+  table.tbl thead th{background:var(--accent);color:#fff;font-weight:700;border-bottom:0}
+  table.tbl thead th:first-child{border-top-left-radius:8px}
+  table.tbl thead th:last-child{border-top-right-radius:8px}
+  table.tbl tbody tr:nth-child(even){background:var(--paper-2)}
+  table.tbl td .fn{font-weight:700;color:var(--accent-2)}
+  .badge{display:inline-block;font-family:var(--sans);font-size:.68rem;font-weight:700;letter-spacing:.03em;padding:.12rem .5rem;border-radius:999px;text-transform:uppercase}
+  .badge.hi{background:#EBD8D2;color:var(--danger)}
+  .badge.mid{background:var(--warm-soft);color:var(--warm)}
+  .badge.lo{background:var(--accent-soft);color:var(--accent-2)}
+
+  /* ---------- Prompt pairs ---------- */
+  .promptpair{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin:1.1rem 0 1.4rem}
+  @media (max-width:640px){.promptpair{grid-template-columns:1fr}}
+  .promptbox{border-radius:11px;padding:.85rem .9rem;font-family:var(--mono);font-size:.78rem;line-height:1.5;white-space:pre-wrap}
+  .promptbox .lab{font-family:var(--sans);font-size:.66rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:.45rem}
+  .promptbox.weak{background:#F3E4E0;border:1px solid #D9B3AA}
+  .promptbox.weak .lab{color:var(--danger)}
+  .promptbox.strong{background:var(--accent-soft);border:1px solid #B9D4CF}
+  .promptbox.strong .lab{color:var(--accent-2)}
+
+  /* ---------- References ---------- */
+  .refs{margin-top:2.4rem;padding-top:1.4rem;border-top:2px solid var(--accent)}
+  .refs h2{border:0;margin-top:0}
+  .refs ol{font-family:var(--sans);font-size:.82rem;line-height:1.5;color:var(--ink-soft);padding-left:1.6rem}
+  .refs li{margin:.5rem 0}
+  .refs li{scroll-margin-top:80px}
+  .refs a{color:var(--accent);word-break:break-word}
+  .disclaimer{font-family:var(--sans);font-size:.78rem;color:var(--ink-soft);background:var(--paper-2);border:1px solid var(--rule);border-radius:10px;padding:.8rem .95rem;margin-top:1.5rem;line-height:1.5}
+
+  .pagefoot{border-top:1px solid var(--rule);margin-top:2rem;padding-top:1.1rem;font-family:var(--sans);font-size:.82rem;color:var(--ink-soft);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+  .pagefoot a{color:var(--accent);text-decoration:none;font-weight:600;cursor:pointer}
+  .kicker-jump{font-family:var(--sans);font-size:.8rem}
+
+  /* SVG shared text helpers */
+  svg text{font-family:var(--sans)}
+  .svg-mono{font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="9.2" fill="none" stroke="var(--accent)" stroke-width="1.6"/><circle cx="11" cy="11" r="4.4" fill="none" stroke="var(--warm)" stroke-width="1.6"/><circle cx="11" cy="11" r="1.5" fill="var(--accent)"/></svg>
+      AI for Research <span class="sub">· workshop wiki</span>
+    </div>
+    <nav class="pagenav" aria-label="Workshop pages">
+      <button data-goto="page1" aria-current="true"><span class="num">1</span>Understanding &amp; Mapping</button>
+      <button data-goto="page2" aria-current="false"><span class="num">2</span>Building &amp; Automation</button>
+      <button data-goto="page3" aria-current="false"><span class="num">3</span>Second Brain</button>
+    </nav>
+  </div>
+</header>
+
+<!-- ============================================================= -->
+<!-- PAGE 1                                                         -->
+<!-- ============================================================= -->
+<main id="page1" class="page is-active">
+ <div class="wrap"><div class="grid">
+
+  <aside class="toc" aria-label="Contents of page 1">
+   <details open>
+    <summary class="toc-label" style="cursor:pointer;list-style:none">On this page</summary>
+    <ol>
+     <li><a href="#p1-overview"><span class="n">1.1</span>Overview &amp; objectives</a></li>
+     <li><a href="#p1-whatis"><span class="n">1.2</span>What AI is</a></li>
+     <li><a href="#p1-howworks"><span class="n">1.3</span>How modern AI works</a></li>
+     <li><a href="#p1-llm"><span class="n">1.4</span>LLMs &amp; generative AI</a></li>
+     <li><a href="#p1-state"><span class="n">1.5</span>The state of the field</a></li>
+     <li><a href="#p1-limits"><span class="n">1.6</span>Limits &amp; risks</a></li>
+     <li><a href="#p1-rules"><span class="n">1.7</span>Rules of the game</a></li>
+     <li><a href="#p1-tools"><span class="n">1.8</span>A map of tools</a></li>
+     <li><a href="#p1-map"><span class="n">1.9</span>Mapping your process</a></li>
+     <li><a href="#p1-refs"><span class="n">§</span>References</a></li>
+    </ol>
+   </details>
+  </aside>
+
+  <div class="content">
+   <p class="eyebrow">Academic workshop · Page 1 of 2</p>
+   <h1 class="page-title">Understanding AI and Mapping Your Research Process</h1>
+   <p class="lede">This first page is diagnostic and conceptual. Before we automate anything, we need an honest account of what these systems are, what they can and cannot do, and where — precisely — they touch the work of research. Only then can automation be designed rather than improvised.</p>
+
+   <div class="thesis-band">
+     <span class="k">The thesis, stated plainly</span>
+     Artificial intelligence should be used <strong>under supervision at the level of each small piece of work</strong> — not delegated wholesale, without human judgment, to produce finished scholarship. This is not merely a normative caution. It has a technical basis in how these systems generate text, and it has become the <em>de facto</em> position of the scientific publishers whose rules govern our field.
+   </div>
+
+   <!-- 1.1 -->
+   <section class="sec" id="p1-overview">
+     <h2><span class="h-num">1.1</span>Overview and objectives</h2>
+     <p>The purpose of this session is not to survey a marketplace of products, nor to certify any tool as the “best.” Products change on a timescale of weeks; the reasoning that lets you evaluate them changes far more slowly. Our aim is therefore to build a durable mental model: an understanding of the machinery beneath the interface, a taxonomy of the failure modes that matter for research integrity, a working knowledge of the rules that journals now impose, and — most importantly — a method for locating the specific points in <em>your own</em> research process where a supervised, small-batch use of AI is genuinely warranted.</p>
+     <p>By the end of this page you should be able to: (i) explain in functional terms what an AI system is and how a large language model produces its output; (ii) name and distinguish the principal risks, with particular attention to fabricated references as the gravest threat to research integrity; (iii) state what the converging 2020s publishing consensus permits and prohibits; and (iv) produce a diagram of your own research process — its loops and its artifacts — that you will bring to the second session as raw material for building a system.</p>
+     <div class="callout note"><div class="cap"><span class="dot"></span>A note on sources</div><p>Where this material relies on industry roundups or adoption statistics, treat them critically. Such figures are produced by commercial actors, are rarely representative, and age quickly. We cite them to illustrate direction and scale, not to establish fact, and we lean on peer-reviewed work wherever it exists.</p></div>
+   </section>
+
+   <!-- 1.2 -->
+   <section class="sec" id="p1-whatis">
+     <h2><span class="h-num">1.2</span>What artificial intelligence is</h2>
+     <p>Start with an authoritative definition rather than an intuition. John McCarthy, who coined the term in 1955, described artificial intelligence as <a href="#p1-r14" class="ref">14</a> the science and engineering of making intelligent machines. The standard modern textbook &mdash; Russell and Norvig&rsquo;s <em>Artificial Intelligence: A Modern Approach</em> &mdash; sharpens this into the study and construction of <strong>rational agents</strong>: systems that perceive an environment and act so as to best achieve their goals.<a href="#p1-r15" class="ref">15</a> Notice what both definitions share: they are <strong>functional</strong>. They define intelligence by what a system <em>does</em>, not by what it is or whether it &ldquo;understands&rdquo;.</p>
+     <p>That functional frame is a deliberate deflation. The word &ldquo;intelligence&rdquo; tempts us to ask whether a machine understands, experiences, or is in some sense conscious; for governing its use in scholarship, that question is a distraction. A system is &ldquo;intelligent&rdquo; here to the extent that it performs tasks which, done by a person, we would say required intelligence &mdash; recognising a pattern, translating a sentence, drafting an argument. Whether anything is happening &ldquo;on the inside&rdquo; is irrelevant to how we should supervise it. What matters is the behaviour and its reliability.</p>
+     <p>This is exactly where machine &ldquo;intelligence&rdquo; and <em>human</em> intelligence part company. Psychology does not define human intelligence by a single task. An American Psychological Association task force characterised it as the ability to understand complex ideas, to adapt effectively to the environment, to learn from experience, to reason, and to overcome obstacles by taking thought.<a href="#p1-r16" class="ref">16</a> Howard Gardner goes further: intelligence is not one general capacity but <strong>plural</strong> &mdash; a set of relatively independent intelligences, among them linguistic, logical-mathematical, spatial, and interpersonal.<a href="#p1-r17" class="ref">17</a> Held against that, today&rsquo;s AI is narrow and singular: superb at the one kind of task it was trained on, with none of the general, adaptive, experience-grounded understanding the psychologists describe.</p>
+     <div class="tablewrap"><table class="tbl">
+       <caption>Table 1.1 &mdash; Two very different things wearing one word.</caption>
+       <thead><tr><th></th><th>Machine &ldquo;intelligence&rdquo; (AI)</th><th>Human intelligence (psychology)</th></tr></thead>
+       <tbody>
+         <tr><td class="fn">What it is</td><td>a functional property &mdash; defined by task performance<a href="#p1-r15" class="ref">15</a></td><td>an adaptive capacity &mdash; understanding, learning, reasoning<a href="#p1-r16" class="ref">16</a></td></tr>
+         <tr><td class="fn">Scope</td><td>narrow: one trained kind of task at a time</td><td>general and plural: many kinds at once<a href="#p1-r17" class="ref">17</a></td></tr>
+         <tr><td class="fn">Where it comes from</td><td>statistical patterns extracted from training data</td><td>experience, embodiment, and culture over a lifetime</td></tr>
+         <tr><td class="fn">&ldquo;Understanding&rdquo;</td><td>not required &mdash; the behaviour is the whole of it</td><td>central to the definition</td></tr>
+       </tbody>
+     </table></div>
+     <p>Within that functional frame, the terms most often confused with one another stand in a nested relationship. Artificial intelligence is the widest field: any technique by which machines perform cognitive-seeming tasks. Machine learning is a subset of AI in which the system&rsquo;s behaviour is learned from data rather than explicitly programmed. Deep learning is in turn a subset of machine learning, using many-layered neural networks; it is the approach behind essentially all of today&rsquo;s generative systems. Running alongside &mdash; overlapping but not identical &mdash; is data science, the broader practice of extracting knowledge from data. The distinctions matter because they tell you what kind of thing you are dealing with, and therefore what kind of error to expect.</p>
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 340" role="img" aria-label="Nested circles showing artificial intelligence containing machine learning, which contains deep learning, with data science overlapping.">
+           <ellipse cx="300" cy="170" rx="260" ry="150" fill="#EAF1EF" stroke="var(--accent)" stroke-width="1.6"/>
+           <ellipse cx="270" cy="180" rx="185" ry="115" fill="#DDE9E6" stroke="var(--accent)" stroke-width="1.4"/>
+           <ellipse cx="250" cy="192" rx="115" ry="80" fill="#CBDFDB" stroke="var(--accent)" stroke-width="1.4"/>
+           <ellipse cx="240" cy="200" rx="58" ry="46" fill="var(--accent)" stroke="var(--accent-2)" stroke-width="1.2"/>
+           <text x="300" y="52" text-anchor="middle" font-size="16" font-weight="800" fill="var(--accent-2)">Artificial Intelligence</text>
+           <text x="270" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent-2)">Machine Learning</text>
+           <text x="250" y="132" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent-2)">Deep Learning</text>
+           <text x="240" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">Generative</text>
+           <text x="240" y="212" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">models / LLMs</text>
+           <ellipse cx="600" cy="215" rx="140" ry="98" fill="none" stroke="var(--warm)" stroke-width="1.6" stroke-dasharray="6 5"/>
+           <text x="648" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="var(--warm)">Data Science</text>
+           <text x="648" y="300" text-anchor="middle" font-size="11" fill="var(--ink-soft)">statistics · domain expertise · pipelines</text>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.1.</b> The field as a set of nested containers. Deep learning is a special case of machine learning, which is a special case of AI; today’s large language models sit at the innermost layer. Data science overlaps the whole but is not contained by it — much of it involves no machine learning at all.</figcaption>
+     </figure>
+   </section>
+
+   <!-- 1.3 -->
+   <section class="sec" id="p1-howworks">
+     <h2><span class="h-num">1.3</span>How modern AI works</h2>
+     <p>Here is the one idea that separates modern AI from ordinary software, in plain terms. Ordinary software follows rules a person wrote: <em>if the total is over $100, apply free shipping</em>. A human thought of the rule; the computer just obeys. Modern AI flips this around. Nobody writes the rules. Instead, the system is <strong>shown an enormous number of examples</strong> and works out the patterns for itself.</p>
+     <p>An analogy. You could try to teach a child what a cat is by writing a definition &mdash; four legs, fur, whiskers &mdash; but it would fail, because so would a dog. What actually works is showing them hundreds of cats until they simply <em>get it</em>. Modern AI learns the same way: show it millions of examples of writing, and it absorbs the patterns of how sentences tend to continue &mdash; without ever being handed a rule. This happens in two phases:</p>
+     <figure class="fig"><div class="frame"><svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="How modern AI works in two phases: training, where the model learns patterns from millions of examples, and using it, where the trained model continues your prompt.">
+  <defs><marker id="arw" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#5C5749"/></marker></defs>
+  <text x="15" y="28" font-family="system-ui,sans-serif" font-size="12.5" font-weight="700" letter-spacing="1" fill="#14524E">① TRAINING — done once, by the AI company</text>
+  <rect x="15" y="42" width="180" height="74" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.6"/><text x="105.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#22201B">Millions of examples</text><text x="105.0" y="94" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" font-style="italic" fill="#5C5749">text from books, the web…</text>
+  <line x1="197" y1="79" x2="221" y2="79" stroke="#5C5749" stroke-width="2" marker-end="url(#arw)"/>
+  <rect x="223" y="42" width="262" height="74" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.6"/><text x="354.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#22201B">It adjusts millions of numbers</text><text x="354.0" y="94" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" font-style="italic" fill="#5C5749">to fit the patterns it sees</text>
+  <line x1="487" y1="79" x2="511" y2="79" stroke="#5C5749" stroke-width="2" marker-end="url(#arw)"/>
+  <rect x="513" y="42" width="190" height="74" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.6"/><text x="608.0" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#22201B">A trained model</text><text x="608.0" y="94" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" font-style="italic" fill="#5C5749">the patterns, frozen</text>
+  <path d="M608 116 C608 150 420 150 420 174" fill="none" stroke="#5C5749" stroke-width="1.4" stroke-dasharray="4 4" marker-end="url(#arw)"/>
+  <text x="470" y="150" font-family="Georgia,serif" font-size="10" font-style="italic" fill="#5C5749">the same model is used below</text>
+  <text x="15" y="192" font-family="system-ui,sans-serif" font-size="12.5" font-weight="700" letter-spacing="1" fill="#A96E24">② USING IT — every time you type a prompt</text>
+  <rect x="15" y="206" width="180" height="74" rx="11" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.6"/><text x="105.0" y="236" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#22201B">Your prompt</text><text x="105.0" y="258" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" font-style="italic" fill="#5C5749">what you type</text>
+  <line x1="197" y1="243" x2="221" y2="243" stroke="#5C5749" stroke-width="2" marker-end="url(#arw)"/>
+  <rect x="223" y="206" width="262" height="74" rx="11" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.6"/><text x="354.0" y="236" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#22201B">It applies those patterns</text><text x="354.0" y="258" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" font-style="italic" fill="#5C5749">to continue your text</text>
+  <line x1="487" y1="243" x2="511" y2="243" stroke="#5C5749" stroke-width="2" marker-end="url(#arw)"/>
+  <rect x="513" y="206" width="190" height="74" rx="11" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.6"/><text x="608.0" y="236" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#22201B">Its answer</text><text x="608.0" y="258" text-anchor="middle" font-family="Georgia,serif" font-size="10.5" font-style="italic" fill="#5C5749">a plausible continuation</text>
+</svg></div><figcaption><b>Figure 1.2.</b> Modern AI in two phases. In <b>training</b> (done once, by the company that builds the model) the system is shown millions of examples and adjusts millions of internal numbers until it reproduces their patterns. In <b>use</b> (every time you prompt it) that frozen model takes your text and continues it in the most pattern-plausible way. It is the same machine both times.</figcaption></figure>
+     <p>Two consequences follow, and they explain almost everything else in this workshop. First, the model is only ever as good as its examples: it copies the patterns in its training data, including the mistakes and the biases. Second, it has learned <em>patterns</em>, not <em>truth</em> &mdash; it has no way to check a claim against the world, only against &ldquo;what usually comes next&rdquo;. That is why it can produce a fluent, confident sentence that is simply wrong.</p>
+     <div class="callout def"><div class="cap"><span class="dot"></span>Definition &middot; a model, in one line</div><p>A machine-learning model is a huge set of adjustable numbers (&ldquo;parameters&rdquo;) tuned on examples until it reproduces their patterns. Its skill is bounded by that data and by what it was trained to do &mdash; which, for a language model, is to <em>continue text plausibly</em>, not to tell the truth.</p></div>
+   </section>
+
+   <!-- 1.4 -->
+   <section class="sec" id="p1-llm">
+     <h2><span class="h-num">1.4</span>Large language models and generative AI</h2>
+     <p>A large language model is a deep neural network trained on an enormous corpus of text to perform one deceptively simple task: given a sequence of words (more precisely, <em>tokens</em>), predict the next one. Generation is this prediction run repeatedly — the model emits a token, appends it to the sequence, and predicts again. Each prediction is a <strong>probability distribution</strong> over the vocabulary; the fluent paragraphs you read are the accumulated result of thousands of such probabilistic choices. There is no separate step in which the model consults a database of facts or verifies a claim. Coherence is the objective; correspondence to reality is not.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 210" role="img" aria-label="A pipeline showing tokens entering a model that outputs a probability distribution over the next token.">
+           <g font-size="13">
+             <rect x="20" y="80" width="70" height="42" rx="7" fill="#fff" stroke="var(--rule-2)"/>
+             <rect x="96" y="80" width="70" height="42" rx="7" fill="#fff" stroke="var(--rule-2)"/>
+             <rect x="172" y="80" width="90" height="42" rx="7" fill="#fff" stroke="var(--rule-2)"/>
+             <text x="55" y="106" text-anchor="middle" class="svg-mono" font-size="12">The</text>
+             <text x="131" y="106" text-anchor="middle" class="svg-mono" font-size="12">policy</text>
+             <text x="217" y="106" text-anchor="middle" class="svg-mono" font-size="12">reform</text>
+             <text x="141" y="66" text-anchor="middle" font-size="11" fill="var(--ink-soft)">context tokens</text>
+             <path d="M270 101 h44" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ah1)"/>
+             <rect x="320" y="62" width="120" height="78" rx="12" fill="var(--accent)"/>
+             <text x="380" y="96" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Transformer</text>
+             <text x="380" y="114" text-anchor="middle" font-size="11" fill="#DDEBE8">next-token model</text>
+             <path d="M440 101 h40" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ah1)"/>
+             <text x="600" y="34" text-anchor="middle" font-size="11" fill="var(--ink-soft)">P(next token)</text>
+             <g>
+               <rect x="500" y="46" width="150" height="18" rx="3" fill="var(--warm)"/><text x="660" y="60" font-size="11" class="svg-mono">was … 0.34</text>
+               <rect x="500" y="70" width="104" height="18" rx="3" fill="#C9A45C"/><text x="660" y="84" font-size="11" class="svg-mono">would 0.22</text>
+               <rect x="500" y="94" width="66" height="18" rx="3" fill="#D8C39A"/><text x="660" y="108" font-size="11" class="svg-mono">is …… 0.14</text>
+               <rect x="500" y="118" width="40" height="18" rx="3" fill="#E4D6B8"/><text x="660" y="132" font-size="11" class="svg-mono">stalled 0.08</text>
+               <rect x="500" y="142" width="22" height="18" rx="3" fill="#ECE2CC"/><text x="660" y="156" font-size="11" class="svg-mono">⋯</text>
+             </g>
+           </g>
+           <defs><marker id="ah1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker></defs>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.3.</b> Generation as repeated next-token prediction. The model returns a probability distribution over the vocabulary and samples from it; the process reveals why output is <b>fluent by construction</b> yet carries no guarantee of factual correctness.</figcaption>
+     </figure>
+
+     <h3>The Transformer and self-attention</h3>
+     <p>What makes modern language models work as well as they do is the <strong>Transformer</strong> architecture, introduced in 2017.<a href="#p1-r1" class="ref">1</a> Its central mechanism is <strong>self-attention</strong>: when processing any given token, the model computes weighted relationships to every other token in the context, allowing it to decide which earlier words are relevant to interpreting the current one. Attention lets “it” resolve to the correct noun many sentences back, and lets the model track the thread of an argument across a long passage. This is why these models capture context so much better than their predecessors — and why longer, better-structured prompts produce better output, a point we will exploit directly in the prompt-engineering section of Page&nbsp;2.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 190" role="img" aria-label="Schematic of self-attention: the token 'it' attends most strongly to an earlier noun.">
+           <g font-size="13" class="svg-mono">
+             <text x="60" y="60">The</text><text x="120" y="60">agency</text><text x="215" y="60">revised</text><text x="305" y="60">the</text><text x="345" y="60">rule</text><text x="415" y="60">because</text><text x="510" y="60">it</text><text x="560" y="60">was</text><text x="625" y="60">outdated</text>
+           </g>
+           <g stroke="var(--accent)" fill="none">
+             <path d="M515 72 q -160 70 -370 -6" stroke-width="3.4" opacity="0.9"/>
+             <path d="M515 72 q -95 55 -175 -6" stroke-width="1.2" opacity="0.4"/>
+             <path d="M515 72 q -40 45 -70 -6" stroke-width="1" opacity="0.3"/>
+             <path d="M515 72 q 60 45 110 -6" stroke-width="1.4" opacity="0.45"/>
+           </g>
+           <circle cx="515" cy="66" r="15" fill="var(--warm)" opacity="0.18"/>
+           <text x="150" y="120" font-size="12" fill="var(--accent-2)" font-weight="700">strongest attention weight</text>
+           <text x="150" y="138" font-size="11" fill="var(--ink-soft)">“it” is bound to “agency”, not to “rule”</text>
+           <text x="560" y="120" font-size="11" fill="var(--ink-soft)">thinner lines = weaker weights</text>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.4.</b> Self-attention, schematically. In interpreting the word “it,” the model weights every other token in context; here the heaviest weight links “it” to “agency.” Attention is how Transformers carry context — and why the structure of your input matters.</figcaption>
+     </figure>
+
+     <div class="callout warn"><div class="cap"><span class="dot"></span>The crucial point · fluency is not truth</div><p>Because the objective is next-token plausibility, an LLM is optimised to sound right, not to be right. A confident, well-formed, entirely false sentence is not a malfunction; it is the system operating exactly as designed. Every downstream rule in this workshop follows from this single fact.</p></div>
+
+     <h3>A historical correction worth making</h3>
+     <p>Public discussion of these systems is riddled with folklore, and a workshop on research practice should model the habit of checking claims against the record. Three widely muddled facts about the most-discussed developer are worth stating cleanly. <strong>OpenAI was founded in 2015</strong>, not later, as a research organisation. <strong>Elon Musk, an early backer, left its board in 2018</strong>; he is frequently but wrongly described as a current director. And <strong>Sam Altman is its chief executive.</strong> None of these bears on the technical argument, but the reflex of correcting a plausible-sounding error before repeating it is exactly the discipline the rest of this session is about.</p>
+   </section>
+
+   <!-- 1.5 -->
+   <section class="sec" id="p1-state">
+     <h2><span class="h-num">1.5</span>The current state of the field</h2>
+     <p>The field is not static, and the direction of travel is itself an argument for supervision. Four movements are worth understanding.</p>
+
+     <h3>From prediction toward reasoning over structured knowledge</h3>
+     <p>The most consequential technical response to the “fluency is not truth” problem is to stop asking the model to recall facts from its parameters and instead <strong>ground</strong> it in an external, structured source at the moment of answering. Retrieval-augmented generation (RAG) does this with passages of text; more recent <strong>graph-based</strong> approaches — knowledge graphs and <strong>GraphRAG</strong> — represent knowledge as entities and the relationships between them, so the model reasons over a curated structure rather than over loosely similar text chunks.<a href="#p1-r5" class="ref">5</a> The empirical claim, now reasonably well supported, is that grounding in structured, factual relationships reduces the surface area for hallucination, because the answer is tied to verifiable nodes and edges rather than reconstructed from probabilities.<a href="#p1-r5" class="ref">5</a> Two cautions belong beside the promise: constructing the graph is itself costly and error-prone, and grounding narrows but never eliminates fabrication.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 240" role="img" aria-label="Schematic contrasting plain generation with graph-grounded generation.">
+           <text x="20" y="26" font-size="12" font-weight="700" fill="var(--danger)">Ungrounded generation</text>
+           <rect x="20" y="38" width="120" height="40" rx="8" fill="#fff" stroke="var(--rule-2)"/><text x="80" y="62" text-anchor="middle" font-size="12">query</text>
+           <path d="M140 58 h40" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#ah2)"/>
+           <rect x="182" y="38" width="120" height="40" rx="8" fill="var(--paper-2)" stroke="var(--rule-2)"/><text x="242" y="62" text-anchor="middle" font-size="12">model priors</text>
+           <path d="M302 58 h40" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#ah2)"/>
+           <rect x="344" y="38" width="150" height="40" rx="8" fill="#F3E4E0" stroke="#D9B3AA"/><text x="419" y="62" text-anchor="middle" font-size="11.5">plausible, unverifiable</text>
+
+           <text x="20" y="126" font-size="12" font-weight="700" fill="var(--accent-2)">Graph-grounded generation (GraphRAG)</text>
+           <rect x="20" y="138" width="110" height="40" rx="8" fill="#fff" stroke="var(--rule-2)"/><text x="75" y="162" text-anchor="middle" font-size="12">query</text>
+           <path d="M130 158 h30" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ah3)"/>
+           <!-- mini knowledge graph -->
+           <g stroke="var(--accent)" stroke-width="1.3">
+             <line x1="215" y1="150" x2="270" y2="128"/><line x1="215" y1="150" x2="270" y2="176"/><line x1="270" y1="128" x2="320" y2="150"/><line x1="270" y1="176" x2="320" y2="150"/>
+           </g>
+           <g fill="var(--accent)"><circle cx="215" cy="150" r="8"/><circle cx="270" cy="128" r="8"/><circle cx="270" cy="176" r="8"/><circle cx="320" cy="150" r="8"/></g>
+           <text x="267" y="205" text-anchor="middle" font-size="11" fill="var(--ink-soft)">entities + relations</text>
+           <path d="M330 152 h28" stroke="var(--accent)" stroke-width="1.5" marker-end="url(#ah3)"/>
+           <rect x="360" y="138" width="150" height="40" rx="8" fill="var(--accent-soft)" stroke="#B9D4CF"/><text x="435" y="156" text-anchor="middle" font-size="11.5">answer tied to</text><text x="435" y="170" text-anchor="middle" font-size="11.5">named sources</text>
+           <path d="M520 158 h26" stroke="var(--accent)" stroke-width="1.4" marker-end="url(#ah3)"/>
+           <rect x="548" y="138" width="150" height="40" rx="8" fill="#fff" stroke="var(--accent)"/><text x="623" y="162" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--accent-2)">human verifies</text>
+           <defs>
+             <marker id="ah2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/></marker>
+             <marker id="ah3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+           </defs>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.5.</b> Grounding as a design response to hallucination. By binding output to entities and relations drawn from a curated graph, GraphRAG makes each claim traceable to a source — which is precisely what makes the final human check tractable.</figcaption>
+     </figure>
+
+     <h3>The rise of agentic AI</h3>
+     <p>The second movement is toward <strong>agents</strong>: systems that do not merely answer a single prompt but plan, call tools, browse, execute code, and take multi-step actions toward a goal with reduced human intervention between steps. Agentic systems are genuinely more capable and genuinely more useful. They are also, for exactly the same reason, riskier: greater autonomy means more consequential actions taken before a human sees them, and errors that compound across a chain rather than surfacing at a single output. The counter-intuitive implication is central to this workshop — <em>the more autonomous the tool, the more deliberately its oversight must be designed.</em> Autonomy does not remove the human from the loop; it raises the stakes of deciding where in the loop the human stands.</p>
+
+     <h3>Narrow, general, super — and the graded view</h3>
+     <p>Popular commentary sorts AI into “narrow” (good at one thing), “general” (human-level across the board), and “super” (beyond human). The trichotomy is a useful entry point but too coarse to describe what we actually have. Today’s frontier models are still <strong>narrow</strong> in the strict sense — they do not possess general competence across all cognitive tasks — yet they are <strong>“closed-scope” and extraordinarily broad</strong>: within the space of language tasks they range widely and unevenly, expert at some, unreliable at others. A more disciplined framing, proposed by researchers at Google DeepMind, replaces the trichotomy with a matrix of <strong>performance</strong> (depth) against <strong>generality</strong> (breadth), with a separate axis for <strong>autonomy</strong>.<a href="#p1-r4" class="ref">4</a> On that scheme, current general-purpose models are classified only as <em>“emerging” AGI</em> — broadly capable but not reliably matching a skilled adult across most tasks — even as narrow systems reach superhuman performance on single problems.<a href="#p1-r4" class="ref">4</a> The value of the graded view is that it forbids the lazy binary “is it AGI yet?” and asks instead <em>how deep, how broad, and how autonomous</em> — the questions that actually bear on whether you should let a system act unsupervised.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 300" role="img" aria-label="A matrix plotting performance against generality, with example systems placed on it.">
+           <line x1="80" y1="260" x2="720" y2="260" stroke="var(--ink-soft)" stroke-width="1.4"/>
+           <line x1="80" y1="260" x2="80" y2="30" stroke="var(--ink-soft)" stroke-width="1.4"/>
+           <text x="400" y="292" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink-soft)">Generality (breadth of tasks) →</text>
+           <text x="34" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink-soft)" transform="rotate(-90 34 150)">Performance (depth) →</text>
+           <text x="200" y="278" text-anchor="middle" font-size="11" fill="var(--ink-soft)">narrow</text>
+           <text x="600" y="278" text-anchor="middle" font-size="11" fill="var(--ink-soft)">general</text>
+           <!-- gridlines -->
+           <g stroke="var(--rule)" stroke-width="1"><line x1="80" y1="200" x2="720" y2="200"/><line x1="80" y1="140" x2="720" y2="140"/><line x1="80" y1="80" x2="720" y2="80"/><line x1="400" y1="30" x2="400" y2="260"/></g>
+           <!-- points -->
+           <circle cx="215" cy="66" r="9" fill="var(--accent)"/><text x="230" y="62" font-size="11" fill="var(--accent-2)" font-weight="700">AlphaFold</text><text x="230" y="76" font-size="10" fill="var(--ink-soft)">superhuman · one task</text>
+           <circle cx="235" cy="150" r="8" fill="var(--warm)"/><text x="250" y="154" font-size="11" fill="var(--ink-soft)">a spam filter (narrow, modest)</text>
+           <circle cx="560" cy="205" r="10" fill="var(--accent-2)"/><text x="575" y="201" font-size="11" fill="var(--accent-2)" font-weight="700">today’s LLMs</text><text x="575" y="215" font-size="10" fill="var(--ink-soft)">broad but “emerging” — uneven</text>
+           <rect x="560" y="42" width="140" height="34" rx="7" fill="none" stroke="var(--rule-2)" stroke-dasharray="5 4"/><text x="630" y="63" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">competent AGI — not yet reached</text>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.6.</b> Capability as a matrix, after the “Levels of AGI” framing.<a href="#p1-r4" class="ref">4</a> Depth and breadth are separate axes: a system can be superhuman yet narrow (AlphaFold), or broad yet only “emerging” and uneven (current LLMs). The honest question is never binary.</figcaption>
+     </figure>
+
+     <h3>An emerging labour market of oversight roles</h3>
+     <p>Finally, the direction of the field is visible in the jobs it is creating, and their character reinforces the thesis. The roles now appearing around AI systems — <strong>ontologists</strong> who design the structured knowledge these systems reason over, <strong>prompt engineers</strong> who specify tasks precisely, <strong>model evaluators and auditors</strong> who test and certify behaviour, and <strong>AI ethicists</strong> who assess consequences and compliance — are overwhelmingly <em>judgment-based oversight</em> roles. They exist because capable automation increases, rather than reduces, the demand for human judgment at the points where the machine’s work meets the world. The market is, in effect, pricing in supervised automation.</p>
+   </section>
+
+   <!-- 1.6 -->
+   <section class="sec" id="p1-limits">
+     <h2><span class="h-num">1.6</span>Limits and risks</h2>
+     <p>To use these systems responsibly you must be able to name their failure modes precisely. The most important, and the most misunderstood, is <strong>hallucination</strong>.</p>
+
+     <div class="callout def"><div class="cap"><span class="dot"></span>Definition · hallucination</div><p>Output that is fluent and plausible but not grounded in, or not faithful to, the relevant source or the world — content the model generated rather than retrieved or verified. It is a structural consequence of probabilistic generation, not an occasional bug.</p></div>
+
+     <p>The research literature offers a taxonomy worth internalising. The original distinction, drawn from natural-language generation, separates <strong>intrinsic</strong> hallucination — output that <em>contradicts</em> a provided source — from <strong>extrinsic</strong> hallucination — output that <em>cannot be verified</em> from the source, whether or not it happens to be true.<a href="#p1-r2" class="ref">2</a> As models moved to open-ended generation without a single explicit source, a second axis was added: <strong>factuality</strong> (does the claim match the world?) versus <strong>faithfulness</strong> (does the output adhere to the instructions and context it was given?).<a href="#p1-r3" class="ref">3</a> A model can be factually correct yet unfaithful to your evidence, or faithful to a misleading source yet factually wrong — which is why “it sounded consistent” is never sufficient assurance.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 300" role="img" aria-label="A taxonomy tree of hallucination types.">
+           <rect x="300" y="16" width="160" height="38" rx="9" fill="var(--accent)"/><text x="380" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Hallucination</text>
+           <path d="M380 54 V78 M200 100 H560 M200 100 V118 M560 100 V118" fill="none" stroke="var(--ink-soft)" stroke-width="1.3"/>
+           <rect x="120" y="118" width="160" height="52" rx="8" fill="var(--paper-2)" stroke="var(--rule-2)"/><text x="200" y="140" text-anchor="middle" font-size="12" font-weight="700">Intrinsic / extrinsic</text><text x="200" y="158" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">contradicts vs. unverifiable</text>
+           <rect x="480" y="118" width="160" height="52" rx="8" fill="var(--paper-2)" stroke="var(--rule-2)"/><text x="560" y="140" text-anchor="middle" font-size="12" font-weight="700">Factuality / faithfulness</text><text x="560" y="158" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">world vs. context</text>
+
+           <text x="380" y="200" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--warm)">Three practical types in research work</text>
+           <path d="M380 208 V222 M150 240 H610 M150 240 V254 M380 240 V254 M610 240 V254" fill="none" stroke="var(--warm)" stroke-width="1.2"/>
+           <rect x="60" y="254" width="180" height="40" rx="8" fill="var(--warm-soft)" stroke="#E0C79B"/><text x="150" y="279" text-anchor="middle" font-size="11.5">confident wrong claim</text>
+           <rect x="290" y="254" width="180" height="40" rx="8" fill="var(--warm-soft)" stroke="#E0C79B"/><text x="380" y="279" text-anchor="middle" font-size="11.5">misread of your source</text>
+           <rect x="520" y="254" width="180" height="40" rx="8" fill="#F3E4E0" stroke="#D9B3AA"/><text x="610" y="273" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--danger)">fabricated reference</text><text x="610" y="288" text-anchor="middle" font-size="9.5" fill="var(--danger)">gravest integrity risk</text>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.7.</b> A taxonomy of hallucination, from the formal axes<a href="#p1-r2" class="ref">2</a><a href="#p1-r3" class="ref">3</a> down to the three types you will actually encounter. The fabricated reference is singled out because it corrupts the citation record itself.</figcaption>
+     </figure>
+
+     <p>For the working researcher, three practical types recur. First, the <strong>confident false claim</strong> — a wrong fact stated with the same assurance as a right one. Second, the <strong>misreading of a source you supplied</strong> — a summary or extraction that quietly distorts what the document said. Third, and gravest, the <strong>fabricated reference</strong>: a citation that looks impeccable — real author names, a plausible title, a correctly formatted DOI — but points to a work that does not exist, or to a real work that says something else entirely. Systematic studies have found fabrication rates ranging widely by model and domain: an analysis in <em>Scientific Reports</em> found that roughly 55% of GPT-3.5’s citations and 18% of GPT-4’s were fabricated, with many of the “real” ones still containing substantive errors;<a href="#p1-r9" class="ref">9</a> a medical-content study found 47% fabricated and only 7% both authentic and accurate;<a href="#p1-r10" class="ref">10</a> and even recent models tested in 2025 fabricated on the order of 20% of citations, climbing for less-studied topics.<a href="#p1-r11" class="ref">11</a> The fabricated reference is the gravest research-integrity risk precisely because it attacks the citation apparatus that scholarship uses to hold itself accountable, and because it is designed — by the fluency objective — to survive a casual glance.</p>
+
+     <h4>The surrounding risks</h4>
+     <p>Beyond hallucination sit a cluster of related hazards. <strong>Inaccuracy and false information</strong> shade into hallucination but also include ordinary errors and outdated knowledge. <strong>Plagiarism and copyright</strong> arise because models are trained on copyrighted text and may reproduce it, and because uncredited AI-generated prose raises unresolved questions of attribution and originality. <strong>Bias</strong> is inherited from training data and can be amplified — a serious matter in social-science and public-policy work, where the analysis of unequal treatment is often the point. And <strong>misuse</strong> ranges from undisclosed reliance that misrepresents authorship to the industrial generation of low-quality or deceptive text. None of these is a reason to abstain; each is a reason to supervise.</p>
+
+     <h3>A decision framework: when is it safe to use AI?</h3>
+     <p>Rather than a blanket permission or prohibition, adopt a rule keyed to two questions: <em>how verifiable is the output?</em> and <em>how close is it to the scientific claim?</em> Where output is cheaply verifiable and far from the claim — rephrasing your own sentence, reformatting a table — supervision is light. Where output is hard to verify or sits near the claim — a factual assertion, a citation, an interpretation of data — supervision must be strict, and some uses (inventing sources, generating findings) are simply off-limits.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 330" role="img" aria-label="A decision flowchart for whether it is safe to use AI on a task.">
+           <rect x="290" y="12" width="180" height="42" rx="10" fill="var(--accent)"/><text x="380" y="38" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">A task in front of you</text>
+           <path d="M380 54 V74" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#ahd)"/>
+           <polygon points="380,76 490,116 380,156 270,116" fill="#fff" stroke="var(--rule-2)"/><text x="380" y="112" text-anchor="middle" font-size="11">Can you verify the</text><text x="380" y="126" text-anchor="middle" font-size="11">output quickly?</text>
+           <path d="M270 116 H150 V150" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#ahd)"/><text x="205" y="108" font-size="10.5" fill="var(--danger)" font-weight="700">no</text>
+           <path d="M490 116 H610 V150" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#ahd)"/><text x="545" y="108" font-size="10.5" fill="var(--accent-2)" font-weight="700">yes</text>
+           <rect x="70" y="150" width="160" height="46" rx="9" fill="#F3E4E0" stroke="#D9B3AA"/><text x="150" y="170" text-anchor="middle" font-size="11" fill="var(--danger)">Do not delegate.</text><text x="150" y="186" text-anchor="middle" font-size="10.5" fill="var(--danger)">Do it yourself / cite by hand</text>
+           <polygon points="610,152 700,186 610,220 520,186" fill="#fff" stroke="var(--rule-2)"/><text x="610" y="182" text-anchor="middle" font-size="10.5">Near the</text><text x="610" y="195" text-anchor="middle" font-size="10.5">scientific claim?</text>
+           <path d="M520 186 H430 V236" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#ahd)"/><text x="470" y="178" font-size="10.5" fill="var(--warm)" font-weight="700">yes</text>
+           <path d="M700 186 H730 V236 H700" stroke="var(--ink-soft)" stroke-width="1.4" marker-end="url(#ahd)"/><text x="716" y="178" font-size="10.5" fill="var(--accent-2)" font-weight="700">no</text>
+           <rect x="350" y="236" width="160" height="46" rx="9" fill="var(--warm-soft)" stroke="#E0C79B"/><text x="430" y="256" text-anchor="middle" font-size="11" fill="var(--warm)">Use, but review</text><text x="430" y="272" text-anchor="middle" font-size="10.5" fill="var(--warm)">strictly, line by line</text>
+           <rect x="600" y="236" width="150" height="46" rx="9" fill="var(--accent-soft)" stroke="#B9D4CF"/><text x="675" y="256" text-anchor="middle" font-size="11" fill="var(--accent-2)">Use freely,</text><text x="675" y="272" text-anchor="middle" font-size="10.5" fill="var(--accent-2)">light review</text>
+           <text x="380" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">In every branch the human remains accountable; the branch only sets how heavy the review is.</text>
+           <defs><marker id="ahd" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--ink-soft)"/></marker></defs>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.8.</b> A decision framework. Verifiability and proximity to the scientific claim jointly set the level of supervision — from “do it yourself” through “review strictly” to “use freely with a light check.” The human never leaves the diagram.</figcaption>
+     </figure>
+   </section>
+
+   <!-- 1.7 -->
+   <section class="sec" id="p1-rules">
+     <h2><span class="h-num">1.7</span>The rules of the game: journals and research ethics</h2>
+     <p>The individual researcher’s judgment does not operate in a vacuum; it operates inside an institutional rulebook that has taken shape rapidly, and unevenly, across the 2020s. When generative tools became widely available at the end of 2022, editors and publishers responded with a scatter of policies. What looked at first like fragmentation has, however, converged on a small set of principles that are now close to universal.</p>
+     <p>Four commitments recur across the major bodies. First, <strong>no AI authorship</strong>: tools cannot be listed as authors because they cannot take responsibility for the work — the position taken by the Committee on Publication Ethics<a href="#p1-r6" class="ref">6</a> and echoed by the ICMJE, WAME, and the major publishers.<a href="#p1-r7" class="ref">7</a><a href="#p1-r8" class="ref">8</a> Second, <strong>mandatory disclosure</strong>: any substantive use of AI in drafting, analysis, translation, or image generation must be declared, typically in the methods or acknowledgements.<a href="#p1-r7" class="ref">7</a> Third, <strong>human accountability</strong>: the authors remain fully responsible for every claim, reference, and interpretation, and must verify AI-produced content.<a href="#p1-r7" class="ref">7</a> Fourth, <strong>confidentiality in peer review</strong>: reviewers are barred from uploading manuscripts into external AI systems, because doing so breaches the confidentiality of unpublished work.<a href="#p1-r13" class="ref">13</a></p>
+
+     <div class="tablewrap"><table class="tbl">
+       <caption>Table 1.2 &mdash; What the major gatekeepers actually require (2023&ndash;2025). Different routes, one core: AI may assist, never author, and its use must be disclosed and verified by accountable humans.</caption>
+       <thead><tr><th>Body / publisher</th><th>Its rule, in brief</th></tr></thead>
+       <tbody>
+         <tr><td class="fn">COPE (Committee on Publication Ethics)</td><td>AI tools cannot be listed as authors; the authors remain responsible for all content.<a href="#p1-r6" class="ref">6</a></td></tr>
+         <tr><td class="fn">ICMJE (medical journals)</td><td>Disclose AI use in the cover letter and the manuscript; AI cannot be an author; reviewers must not upload manuscripts into AI tools.<a href="#p1-r18" class="ref">18</a></td></tr>
+         <tr><td class="fn">Nature Portfolio</td><td>No AI authorship (an LLM cannot be accountable); declare any substantive use; AI-generated images are not permitted.<a href="#p1-r19" class="ref">19</a></td></tr>
+         <tr><td class="fn">Science (AAAS)</td><td>The strictest: AI-generated text is not allowed without disclosure and editor permission; AI cannot be an author.<a href="#p1-r20" class="ref">20</a></td></tr>
+         <tr><td class="fn">Elsevier</td><td>Generative AI permitted only to improve language and readability, with disclosure; never as an author.<a href="#p1-r21" class="ref">21</a></td></tr>
+         <tr><td class="fn">Springer Nature</td><td>LLMs cannot be authors; document any generative use in the Methods; plain copy-editing is exempt.<a href="#p1-r22" class="ref">22</a></td></tr>
+       </tbody>
+     </table></div>
+
+     <div class="callout note"><div class="cap"><span class="dot"></span>Read the publishers’ stance as an argument, not just a rule</div><p>Notice what the publishers have actually mandated: that a human must own, disclose, and verify every AI contribution. That <em>is</em> supervised automation, written into the rulebook. The publishing world’s convergence is independent evidence for our thesis — the field’s own gatekeepers have concluded that unsupervised delegation is incompatible with the responsibilities of authorship.</p></div>
+   </section>
+
+   <!-- 1.8 -->
+   <section class="sec" id="p1-tools">
+     <h2><span class="h-num">1.8</span>A functional overview map of tools</h2>
+     <p>We deliberately avoid ranking products. A ranking is stale on the day it is published and encourages the wrong habit — choosing a tool and then finding work for it, rather than identifying a function and then choosing an instrument. The two tables below organise the landscape by <em>function</em>. The first covers AI tools; the second covers the non-AI, foundational tools that make a research system work at all, and which no amount of AI capability replaces.</p>
+
+     <div class="tablewrap">
+       <table class="tbl">
+         <caption>Table 1.3 — AI tools organised by function (function, not brand, is the durable unit)</caption>
+         <thead><tr><th>Function</th><th>What it does in research</th><th>Where supervision must bite</th></tr></thead>
+         <tbody>
+           <tr><td class="fn">Conversational assistants</td><td>General drafting, explanation, brainstorming, restructuring text</td><td>Every factual claim and citation it introduces</td></tr>
+           <tr><td class="fn">Literature discovery &amp; mapping</td><td>Surfacing related work, tracing citation networks, summarising fields</td><td>Confirm each paper exists and says what is claimed</td></tr>
+           <tr><td class="fn">Grounded / source-anchored Q&amp;A</td><td>Answering over documents <em>you</em> supply (RAG over your library)</td><td>Check faithfulness to the source, not just plausibility</td></tr>
+           <tr><td class="fn">Reference &amp; citation handling</td><td>Formatting and (with care) locating references</td><td>Verify against the actual record every time</td></tr>
+           <tr><td class="fn">Transcription &amp; translation</td><td>Interview transcription, cross-language reading</td><td>Spot-check accuracy; watch for confident mistranslation</td></tr>
+           <tr><td class="fn">Coding &amp; data assistants</td><td>Writing and debugging analysis scripts</td><td>Run, test, and read the code; never trust unread output</td></tr>
+           <tr><td class="fn">Language &amp; style editing</td><td>Grammar, clarity, tightening prose</td><td>Ensure meaning and authorship are preserved</td></tr>
+         </tbody>
+       </table>
+     </div>
+
+     <div class="tablewrap">
+       <table class="tbl">
+         <caption>Table 1.4 — Non-AI foundational tools (the substrate a supervised system is built on)</caption>
+         <thead><tr><th>Function</th><th>Role in the system</th><th>Why it is load-bearing</th></tr></thead>
+         <tbody>
+           <tr><td class="fn">Reference manager</td><td>Canonical store of sources (e.g. a Zotero-style library)</td><td>The verified citation record AI must be checked against</td></tr>
+           <tr><td class="fn">Plain-text / Markdown notes</td><td>Durable, portable knowledge base</td><td>Readable by any tool; survives any vendor</td></tr>
+           <tr><td class="fn">Version control (Git)</td><td>History of every change to text and code</td><td>Natural audit trail; makes review a matter of reading a diff</td></tr>
+           <tr><td class="fn">Typesetting (LaTeX / Markdown → PDF)</td><td>Regenerates formatted output from source</td><td>Output is disposable; the source is what you own</td></tr>
+           <tr><td class="fn">Local / encrypted storage</td><td>Keeps canonical data under your control</td><td>Data sovereignty; the system survives any service vanishing</td></tr>
+         </tbody>
+       </table>
+     </div>
+     <p>The second table quietly anticipates Page&nbsp;2. Notice that the foundational tools share a property: they let you keep a single, owned, canonical version of your material and regenerate everything else from it. That property is what makes supervised automation practical, and it is the architecture we will build.</p>
+   </section>
+
+   <!-- 1.9 -->
+   <section class="sec" id="p1-map">
+     <h2><span class="h-num">1.9</span>Mapping your research process</h2>
+     <p>The remainder of this page turns from AI to <em>you</em>. Automation is only as good as the map of the terrain to which it is applied — so it helps first to see the whole research lifecycle at once and to mark, honestly, where automation is safe, where it must be supervised, and where it should not intrude at all.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 544" role="img" aria-label="The research process as nine stages, each colour-coded by how safely it can be automated: teal for safe rule-based automation, ochre for AI-assisted steps that must be checked, and brick for steps that must stay human.">
+<rect x="40" y="14" width="13" height="13" rx="3" fill="#E1ECE9" stroke="#14524E" stroke-width="1.2"/><text x="60" y="24.5" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" font-weight="700" fill="#5C5749">Safe to automate</text>
+<rect x="210" y="14" width="13" height="13" rx="3" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.2"/><text x="230" y="24.5" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" font-weight="700" fill="#5C5749">AI — always check</text>
+<rect x="392" y="14" width="13" height="13" rx="3" fill="#F3E4E0" stroke="#8F3A2E" stroke-width="1.2"/><text x="412" y="24.5" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" font-weight="700" fill="#5C5749">Keep human</text>
+<rect x="40" y="52" width="680" height="46" rx="9" fill="#E1ECE9" stroke="#14524E" stroke-width="1.2"/>
+<rect x="40" y="52" width="5" height="46" fill="#14524E"/>
+<text x="62" y="76.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#14524E">1</text>
+<text x="84" y="70" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Find & collect literature</text>
+<text x="84" y="85" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">One-click capture, no retyping</text>
+<rect x="40" y="106" width="680" height="46" rx="9" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.2"/>
+<rect x="40" y="106" width="5" height="46" fill="#A96E24"/>
+<text x="62" y="130.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#A96E24">2</text>
+<text x="84" y="124" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Read & annotate</text>
+<text x="84" y="139" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">AI drafts a summary; you evaluate it</text>
+<rect x="40" y="160" width="680" height="46" rx="9" fill="#E1ECE9" stroke="#14524E" stroke-width="1.2"/>
+<rect x="40" y="160" width="5" height="46" fill="#14524E"/>
+<text x="62" y="184.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#14524E">3</text>
+<text x="84" y="178" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Organise references</text>
+<text x="84" y="193" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">Deduplicate, sync, restyle</text>
+<rect x="40" y="214" width="680" height="46" rx="9" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.2"/>
+<rect x="40" y="214" width="5" height="46" fill="#A96E24"/>
+<text x="62" y="238.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#A96E24">4</text>
+<text x="84" y="232" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Collect empirical data</text>
+<text x="84" y="247" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">Transcribe locally; mind privacy</text>
+<rect x="40" y="268" width="680" height="46" rx="9" fill="#E1ECE9" stroke="#14524E" stroke-width="1.2"/>
+<rect x="40" y="268" width="5" height="46" fill="#14524E"/>
+<text x="62" y="292.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#14524E">5</text>
+<text x="84" y="286" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Clean & manage data</text>
+<text x="84" y="301" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">Rename, reshape, tidy files</text>
+<rect x="40" y="322" width="680" height="46" rx="9" fill="#F3E4E0" stroke="#8F3A2E" stroke-width="1.2"/>
+<rect x="40" y="322" width="5" height="46" fill="#8F3A2E"/>
+<text x="62" y="346.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#8F3A2E">6</text>
+<text x="84" y="340" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Analyse data</text>
+<text x="84" y="355" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">Run it automatically; interpret it yourself</text>
+<rect x="40" y="376" width="680" height="46" rx="9" fill="#F3E4E0" stroke="#8F3A2E" stroke-width="1.2"/>
+<rect x="40" y="376" width="5" height="46" fill="#8F3A2E"/>
+<text x="62" y="400.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#8F3A2E">7</text>
+<text x="84" y="394" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Write & draft</text>
+<text x="84" y="409" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">Cite automatically; write the argument yourself</text>
+<rect x="40" y="430" width="680" height="46" rx="9" fill="#E1ECE9" stroke="#14524E" stroke-width="1.2"/>
+<rect x="40" y="430" width="5" height="46" fill="#14524E"/>
+<text x="62" y="454.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#14524E">8</text>
+<text x="84" y="448" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Format & submit</text>
+<text x="84" y="463" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">Reformat for a journal in one step</text>
+<rect x="40" y="484" width="680" height="46" rx="9" fill="#E1ECE9" stroke="#14524E" stroke-width="1.2"/>
+<rect x="40" y="484" width="5" height="46" fill="#14524E"/>
+<text x="62" y="508.0" text-anchor="middle" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="16" font-weight="800" fill="#14524E">9</text>
+<text x="84" y="502" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14.5" font-weight="700" fill="#22201B">Back up & disclose</text>
+<text x="84" y="517" dominant-baseline="central" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12.5" fill="#5C5749">Automatic version history is your audit trail</text>
+</svg>
+       </div>
+       <figcaption><b>Figure 1.9.</b> The research process as nine stages, colour-coded by how much of each may be safely handed off. Teal stages are rule-based work that can be automated freely; ochre stages use AI and so must be checked every time; the two brick stages — the interpretation of data and the making of the argument — remain human. Note the shape: the mechanical work clusters at the two ends of a project, and the scholarship sits protected in the middle.</figcaption>
+     </figure>
+
+     <p>That colouring is the argument of this workshop in miniature, and it is the terrain onto which you will now map your own project. We do so through two complementary lenses, each ending in a short activity; together they produce the diagram you will bring to the next session.</p>
+
+     <h3>Lens one — process and loops</h3>
+     <p>Research is not a pipeline that runs once from question to paper. It is a system of <strong>loops</strong>: you draft, you read, you realise the framing is wrong, you revise the question, you re-read, you re-analyse. Redundancy — doing the same kind of thing many times over — is not a defect to be engineered away; it is an <em>intrinsic property</em> of inquiry, the mechanism by which understanding is refined. The relevant economic fact is that the cost of research is <strong>per-iteration</strong>: what hurts is not that you loop but how expensive each pass through the loop is. This is exactly where AI earns its place. Used under supervision, it lowers the marginal cost of an iteration — a faster first draft to react to, a quicker restructuring to evaluate — so that you can afford more loops, and better ones. Used <em>without</em> supervision, it does the opposite: it lets a bad iteration masquerade as a finished one.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 220" role="img" aria-label="A loop diagram of the research process showing iteration between drafting, reading and revising.">
+           <g fill="none" stroke="var(--accent)" stroke-width="2">
+             <path d="M170 110 a110 70 0 1 1 0 0.1" />
+           </g>
+           <path d="M280 45 l6 -14 l-16 4 z" fill="var(--accent)"/>
+           <g font-size="12">
+             <circle cx="170" cy="110" r="9" fill="var(--warm)"/><text x="120" y="114" text-anchor="end" font-weight="700">frame question</text>
+             <circle cx="280" cy="40" r="9" fill="var(--accent)"/><text x="280" y="26" text-anchor="middle">draft / analyse</text>
+             <circle cx="390" cy="110" r="9" fill="var(--accent)"/><text x="440" y="114" font-weight="700">read / react</text>
+             <circle cx="280" cy="180" r="9" fill="var(--accent)"/><text x="280" y="203" text-anchor="middle">revise</text>
+           </g>
+           <text x="560" y="90" font-size="12" font-weight="700" fill="var(--accent-2)">cost is per-iteration</text>
+           <text x="560" y="110" font-size="11" fill="var(--ink-soft)">AI lowers marginal cost</text>
+           <text x="560" y="126" font-size="11" fill="var(--ink-soft)">of each pass — under review</text>
+           <text x="560" y="150" font-size="11" fill="var(--danger)">without review, it hides</text>
+           <text x="560" y="166" font-size="11" fill="var(--danger)">bad iterations as finished</text>
+         </svg>
+       </div>
+       <figcaption><b>Figure 1.10.</b> Research as a loop, not a line. Because iteration is intrinsic and its cost is per-pass, a supervised AI that cheapens each pass increases the quality achievable within a fixed budget — while an unsupervised one degrades it.</figcaption>
+     </figure>
+
+     <div class="callout activity"><div class="cap"><span class="dot"></span>Activity 1 · draw your loops</div><p>Sketch your current project as loops rather than a straight line. Mark the two or three loops you traverse most often and, beside each, note what makes a single pass expensive right now. Those expensive passes are your candidate automation points.</p></div>
+
+     <h3>Lens two — artifacts</h3>
+     <p>Here is a fact with large practical consequences: <strong>AI operates on artifacts.</strong> It does not act on your intentions, your half-formed sense of the argument, or the conversation you had with a colleague. It acts on the text, the notes, the data file, the reference entry — the concrete, inspectable objects you hand it. Two things follow. First, the quality of what AI can do for you is bounded by the quality of your artifacts: a tidy, well-structured note produces a useful summary; a chaotic one produces a chaotic summary rendered in confident prose. Second, because the artifact is the unit AI touches, keeping your artifacts <em>tidy and canonical</em> is not housekeeping but infrastructure. This lens is the bridge to Page&nbsp;2’s central principle.</p>
+     <div class="callout activity"><div class="cap"><span class="dot"></span>Activity 2 · inventory your artifacts</div><p>List the artifacts your research actually runs on: reading notes, a reference library, data files, draft sections, interview transcripts. For each, mark whether it currently has one canonical home or is scattered across copies. The scattered ones are where a system will pay off first. Bring both sketches — your loops and your artifact inventory — to Page&nbsp;2.</p></div>
+
+   </section>
+
+   <!-- References -->
+   <div class="refs" id="p1-refs">
+     <h2>References — Page 1</h2>
+     <ol>
+       <li id="p1-r1">Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). <em>Attention Is All You Need.</em> Advances in Neural Information Processing Systems 30. arXiv:1706.03762.</li>
+       <li id="p1-r2">Ji, Z., Lee, N., Frieske, R., et al. (2023). <em>Survey of Hallucination in Natural Language Generation.</em> ACM Computing Surveys 55(12), 1–38. — origin of the intrinsic/extrinsic distinction.</li>
+       <li id="p1-r3">Huang, L., Yu, W., Ma, W., et al. (2025). <em>A Survey on Hallucination in Large Language Models: Principles, Taxonomy, Challenges, and Open Questions.</em> ACM Transactions on Information Systems. doi:10.1145/3703155. — factuality vs. faithfulness.</li>
+       <li id="p1-r4">Morris, M. R., Sohl-Dickstein, J., Fiedel, N., et al. (2024). <em>Levels of AGI for Operationalizing Progress on the Path to AGI.</em> Proceedings of the 41st International Conference on Machine Learning (PMLR 235). arXiv:2311.02462.</li>
+       <li id="p1-r5">Edge, D., Trinh, H., Cheng, N., et al. (2024). <em>From Local to Global: A Graph RAG Approach to Query-Focused Summarization.</em> Microsoft Research. arXiv:2404.16130.</li>
+       <li id="p1-r6">Committee on Publication Ethics (COPE). (2023). <em>Authorship and AI Tools: COPE Position Statement.</em> publicationethics.org.</li>
+       <li id="p1-r7">International Committee of Medical Journal Editors (ICMJE). (2023, updated 2024–2025). <em>Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work — Defining the Role of Authors and Contributors.</em> icmje.org.</li>
+       <li id="p1-r8">Nature Portfolio (2023). <em>Tools such as ChatGPT threaten transparent science; here are our ground rules for their use.</em> Nature 613, 612; and Nature editorial policies on AI.</li>
+       <li id="p1-r9">Walters, W. H., &amp; Wilder, E. I. (2023). <em>Fabrication and errors in the bibliographic citations generated by ChatGPT.</em> Scientific Reports 13, 14045. doi:10.1038/s41598-023-41032-5.</li>
+       <li id="p1-r10">Bhattacharyya, M., Miller, V. M., Bhattacharyya, D., &amp; Miller, L. E. (2023). <em>High Rates of Fabricated and Inaccurate References in ChatGPT-Generated Medical Content.</em> Cureus 15(5): e39238.</li>
+       <li id="p1-r11">Linardon, J., et al. (2025), as reported; and reference-validation analyses of GPT-4o citation fabrication (~20% overall, higher for niche topics). See also Walters &amp; Wilder (2023) above.</li>
+       <li id="p1-r12">Van Noorden, R., &amp; Perkel, J. M. (2023). <em>AI and science: what 1,600 researchers think.</em> Nature 621, 672–675.</li>
+       <li id="p1-r13">Lauer, M., Constant, S., &amp; Wernimont, A. (2023). <em>Using AI in Peer Review Is a Breach of Confidentiality.</em> NIH Office of Extramural Research.</li><li id="p1-r14">McCarthy, J. (2007). <em>What Is Artificial Intelligence?</em> Stanford University.</li><li id="p1-r15">Russell, S., &amp; Norvig, P. (2021). <em>Artificial Intelligence: A Modern Approach</em> (4th ed.). Pearson.</li><li id="p1-r16">Neisser, U., Boodoo, G., Bouchard, T. J., et al. (1996). Intelligence: Knowns and Unknowns. <em>American Psychologist, 51</em>(2), 77&ndash;101.</li><li id="p1-r17">Gardner, H. (2011). <em>Frames of Mind: The Theory of Multiple Intelligences</em> (3rd ed.). Basic Books. (Original work published 1983)</li><li id="p1-r18">International Committee of Medical Journal Editors. (2023). <em>Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals</em> (updated May 2023).</li><li id="p1-r19">Nature Portfolio. (2023). <em>Editorial Policies: Artificial Intelligence (AI).</em></li><li id="p1-r20">Thorp, H. H. (2023). ChatGPT is fun, but not an author. <em>Science, 379</em>(6630), 313.</li><li id="p1-r21">Elsevier. (2023). <em>The Use of Generative AI and AI-Assisted Technologies in Writing for Elsevier.</em></li><li id="p1-r22">Springer Nature. (2023). <em>Editorial Policies: Artificial Intelligence (AI) &mdash; Authorship.</em></li>
+     </ol>
+     <div class="disclaimer"><strong>On sources and currency.</strong> Peer-reviewed references are prioritised. Industry adoption figures and tool descriptions are treated as indicative, not authoritative, and reflect information available in mid-2026; verify current publisher policies and tool capabilities directly, as both change rapidly.</div>
+   </div>
+
+   <div class="pagefoot">
+     <span>Page 1 of 3 · <span class="kicker-jump">Understanding AI and Mapping Your Research Process</span></span>
+     <a data-goto="page2">Continue to Page 2 · Building Your Research System →</a>
+   </div>
+  </div>
+ </div></div>
+</main>
+
+<!-- ============================================================= -->
+<!-- PAGE 2                                                         -->
+<!-- ============================================================= -->
+<main id="page2" class="page">
+ <div class="wrap"><div class="grid">
+
+  <aside class="toc" aria-label="Contents of page 2">
+   <details open>
+    <summary class="toc-label" style="cursor:pointer;list-style:none">On this page</summary>
+    <ol>
+     <li><a href="#p2-overview"><span class="n">2.1</span>The funnel, on one view</a></li>
+     <li><a href="#p2-principle"><span class="n">2.2</span>Two principles</a></li>
+     <li><a href="#p2-castwide"><span class="n">2.3</span>Cast wide</a></li>
+     <li><a href="#p2-prompt"><span class="n">2.4</span>Prompting to extract</a></li>
+     <li><a href="#p2-triage"><span class="n">2.5</span>The triage table</a></li>
+     <li><a href="#p2-extract"><span class="n">2.6</span>Choosing a tool</a></li>
+     <li><a href="#p2-gap"><span class="n">2.7</span>Finding the gap</a></li>
+     <li><a href="#p2-annobib"><span class="n">2.8</span>The annotated bibliography</a></li>
+     <li><a href="#p2-deep"><span class="n">2.9</span>Reading deeply</a></li>
+     <li><a href="#p2-draft"><span class="n">2.10</span>Drafting is assembling</a></li>
+     <li><a href="#p2-matrix"><span class="n">2.11</span>Where AI fits</a></li>
+     <li><a href="#p2-tools"><span class="n">2.12</span>The tool landscape</a></li>
+     <li><a href="#p2-triggers"><span class="n">2.13</span>The trigger map</a></li>
+     <li><a href="#p2-lineage"><span class="n">2.14</span>One lineage</a></li>
+     <li><a href="#p2-adopt"><span class="n">2.15</span>Staged adoption</a></li>
+     <li><a href="#p2-ethics"><span class="n">2.16</span>Ethics in practice</a></li>
+     <li><a href="#p2-sovereignty"><span class="n">2.17</span>The sovereignty test</a></li>
+     <li><a href="#p2-refs"><span class="n">§</span>References</a></li>
+    </ol>
+   </details>
+  </aside>
+
+  <div class="content">
+   <p class="eyebrow">Academic workshop · Page 2 of 3</p>
+<h1 class="page-title">The Research Workflow: From a Wide Net to a Written Argument</h1>
+<p class="lede">Page&nbsp;1 was diagnostic. This page is procedural: one concrete, end-to-end way to move from a first idea to a written argument, with AI used under supervision at each small step. The spine of it is a single funnel — cast wide, find the gap, go deep — and every section is one stage of that picture.</p>
+   <section class="sec" id="p2-overview">
+     <h2><span class="h-num">2.1</span>The research workflow, on one view</h2>
+     <p>In <a href="#p1-map">&sect;1.9</a> you mapped the research process as nine stages, from finding literature to backing up your files, and marked where automation is safe. This page is where you build a way to move through them. The shape of that movement is a <strong>funnel</strong>: you cast a wide net across the literature, read it shallowly to find your gap, then read a few papers deeply to build your argument. The tools narrow as you go, and the scholarship &mdash; analysing and arguing &mdash; sits protected in the middle, exactly as the colours in Figure&nbsp;1.9 showed.</p>
+     <figure class="fig"><div class="frame"><svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The research funnel: cast wide (Publish or Perish, Zotero, triage table) to find the gap, then go deep (read and note, concepts and arguments, draft).">
+  <defs><marker id="fa" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9 z" fill="#5C5749"/></marker></defs>
+  <text x="15" y="34" font-family="system-ui,sans-serif" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#A96E24">① CAST WIDE — outside Obsidian (~100 papers)</text>
+  <rect x="15" y="48" width="150" height="48" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.7"/><text x="90" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" font-weight="700" fill="#0E3B38">Publish or Perish</text>
+  <line x1="167" y1="72" x2="188" y2="72" stroke="#5C5749" stroke-width="2" marker-end="url(#fa)"/>
+  <rect x="190" y="48" width="150" height="48" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.7"/><text x="265" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" font-weight="700" fill="#0E3B38">Zotero</text>
+  <line x1="342" y1="72" x2="363" y2="72" stroke="#5C5749" stroke-width="2" marker-end="url(#fa)"/>
+  <rect x="365" y="48" width="150" height="48" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.7"/><text x="440" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" font-weight="700" fill="#0E3B38">Triage table</text>
+  <line x1="517" y1="72" x2="538" y2="72" stroke="#5C5749" stroke-width="2" marker-end="url(#fa)"/>
+  <rect x="540" y="48" width="150" height="48" rx="11" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.7"/><text x="615" y="76" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" font-weight="700" fill="#7A4E17">find the gap</text>
+  <line x1="615" y1="98" x2="615" y2="185" stroke="#5C5749" stroke-width="2" marker-end="url(#fa)"/>
+  <text x="15" y="176" font-family="system-ui,sans-serif" font-size="12.5" font-weight="700" letter-spacing="1.2" fill="#A96E24">② GO DEEP — the gap's papers (10–20)</text>
+  <rect x="540" y="190" width="150" height="48" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.7"/><text x="615" y="218" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" font-weight="700" fill="#0E3B38">Read &amp; note</text>
+  <line x1="538" y1="214" x2="517" y2="214" stroke="#5C5749" stroke-width="2" marker-end="url(#fa)"/>
+  <rect x="365" y="190" width="150" height="48" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.7"/><text x="440" y="218" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" font-weight="700" fill="#0E3B38">Concepts + args</text>
+  <line x1="363" y1="214" x2="342" y2="214" stroke="#5C5749" stroke-width="2" marker-end="url(#fa)"/>
+  <rect x="190" y="190" width="150" height="48" rx="11" fill="#E1ECE9" stroke="#14524E" stroke-width="1.7"/><text x="265" y="218" text-anchor="middle" font-family="Georgia,serif" font-size="13.5" font-weight="700" fill="#0E3B38">Draft</text>
+  <text x="190" y="272" font-family="Georgia,serif" font-size="11.5" font-style="italic" fill="#5C5749">Only the 10–20 survivors ever enter your vault.</text>
+</svg></div><figcaption><b>Figure 2.1.</b> The research funnel. Reading the arrows: across the top you cast a wide net &mdash; Publish or Perish &rarr; Zotero &rarr; a triage table &mdash; until you can find the gap; then down and back along the bottom you go deep, reading and noting the survivors, distilling concepts and arguments, and drafting. Casting and triaging happen outside Obsidian; only the 10&ndash;20 papers that speak to your gap enter the vault.</figcaption></figure>
+     <p>This diagram is the spine of the page. <strong>Every section that follows walks one stage of it, in order</strong> &mdash; from casting the net, through prompting an AI to extract from what you find, building the triage table, finding the gap, and reading deeply, to drafting. If you lose your place, come back here and ask: am I still casting wide, or have I started going deep?</p>
+     <p>We move from mapping to building. The session opens with participants presenting the maps they produced in the Page&nbsp;1 activities — their loops and their artifact inventory. This is not a formality: the system you build should be shaped by <em>your</em> expensive iterations, not by a generic template. By the end you should be able to describe your research as a hub-and-spoke system with a defined data-ownership boundary; specify, per component, what may be automated and how strictly it must be reviewed; formulate prompts as a form of input-side supervision; and articulate an honest, staged adoption plan that leaves your research intact even if any single service disappears.</p>
+   </section>
+   <section class="sec" id="p2-principle">
+     <h2><span class="h-num">2.2</span>The two core principles that fuse into one</h2>
+     <p>Two principles govern everything that follows. Stated separately they sound like ordinary good advice; the important claim is that they are the <em>same</em> claim seen from two sides.</p>
+     <p>The first is the <strong>single source of truth</strong>. Each piece of information — a definition, a data table, a finding, a reference — has exactly one canonical home. Everywhere else that the information appears is a <em>regenerated view</em> of that home, never an independently edited copy. If your methods section, your slide deck, and your thesis chapter all describe the same procedure, they do not contain three hand-maintained descriptions that drift apart; they contain three views generated from one source. The moment you find yourself copy-pasting a fact and editing the copy, the single source of truth has been broken, and the drift has begun.</p>
+     <p>The second is <strong>supervision per small batch</strong>. AI is never turned loose to remake a whole document. It edits the <em>source</em> in small, bounded changes, and the human reviews each change as a <strong>diff</strong> — a precise before-and-after of exactly what was altered — before accepting it. Small batches keep each review within the reach of human attention; the diff makes the review a matter of reading what changed rather than re-reading everything.</p>
+     <p>Now the fusion. What does it take for a change to a single source to propagate correctly to every view? It takes a structure in which views are <em>derived</em> from the source by a repeatable process. And what does it take for AI’s work to be reviewable as a diff? It takes exactly the same thing: a single source against which a change is a well-defined difference. <strong>The structure that makes updates propagate automatically is the structure that makes AI’s work reviewable.</strong> Single source of truth and supervised small-batch editing are not two practices you adopt; they are one architecture, described once by what it automates and once by what it lets you check.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 250" role="img" aria-label="A single canonical source regenerating multiple views, with an AI edit reviewed as a diff.">
+           <rect x="300" y="20" width="160" height="54" rx="12" fill="var(--accent)"/><text x="380" y="44" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">Canonical source</text><text x="380" y="62" text-anchor="middle" font-size="10.5" fill="#DDEBE8">the one editable home</text>
+           <g stroke="var(--accent)" stroke-width="1.5" fill="none">
+             <path d="M330 74 C 250 110, 190 120, 150 150" marker-end="url(#ah4)"/>
+             <path d="M380 74 V150" marker-end="url(#ah4)"/>
+             <path d="M430 74 C 510 110, 570 120, 610 150" marker-end="url(#ah4)"/>
+           </g>
+           <g font-size="11">
+             <rect x="80" y="150" width="140" height="40" rx="8" fill="#fff" stroke="var(--rule-2)"/><text x="150" y="174" text-anchor="middle">paper (view)</text>
+             <rect x="310" y="150" width="140" height="40" rx="8" fill="#fff" stroke="var(--rule-2)"/><text x="380" y="174" text-anchor="middle">slides (view)</text>
+             <rect x="540" y="150" width="140" height="40" rx="8" fill="#fff" stroke="var(--rule-2)"/><text x="610" y="174" text-anchor="middle">thesis (view)</text>
+           </g>
+           <text x="150" y="212" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">regenerated — never hand-edited</text>
+           <!-- diff panel -->
+           <g>
+             <rect x="500" y="16" width="230" height="64" rx="9" fill="#FBFAF6" stroke="var(--warm)"/>
+             <text x="515" y="34" font-size="10.5" class="svg-mono" fill="var(--danger)">- old sentence</text>
+             <text x="515" y="50" font-size="10.5" class="svg-mono" fill="var(--accent-2)">+ AI-edited sentence</text>
+             <text x="515" y="70" font-size="10" fill="var(--warm)" font-weight="700">human reviews the diff → accept / reject</text>
+           </g>
+           <path d="M500 48 L462 44" stroke="var(--warm)" stroke-width="1.3" marker-end="url(#ah5)"/>
+           <defs>
+             <marker id="ah4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+             <marker id="ah5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--warm)"/></marker>
+           </defs>
+         </svg>
+       </div>
+       <figcaption><b>Figure 2.2.</b> One architecture, two readings. Views are regenerated from a single canonical source (the automation reading); an AI edit to that source arrives as a diff the human accepts or rejects (the supervision reading). The propagating structure and the reviewable structure are identical.</figcaption>
+     </figure>
+   </section>
+   <section class="sec" id="p2-castwide">
+     <h2><span class="h-num">2.3</span>Cast wide, then organise</h2>
+     <p>The first two steps happen entirely outside Obsidian. Run your keywords through <strong>Publish or Perish</strong>, which queries scholarly databases and returns a large batch &mdash; often around a hundred papers, fewer in a settled field, more in a novel one &mdash; and export the whole set. Then import all of it into <strong>Zotero</strong>. Now every paper has clean metadata and a <strong>citekey</strong>, the short handle you will use to point at it from here to the final bibliography.</p>
+     <div class="callout note"><div class="cap"><span class="dot"></span>What Zotero is for, and what it is not</div><p>Zotero and the AI do different jobs. <strong>Zotero</strong> manages <em>that a paper exists and how to cite it</em>: it stores the PDFs, gives each a citekey, and later generates your in-text citations and bibliography. <strong>The AI</strong>, in the next step, reads <em>what a paper says</em>. You keep both; neither replaces the other.</p></div>
+   </section>
+   <section class="sec" id="p2-prompt">
+     <h2><span class="h-num">2.4</span>Prompting an AI to extract from a paper</h2>
+     <p>It is tempting to treat prompting as a bag of tricks — incantations that unlock better output. That framing is both wrong and unhelpful. Prompt engineering is better understood as a <strong>methodological skill</strong>: the disciplined communication of your <em>intent</em>, the relevant <em>context</em>, and the operative <em>constraints</em> to a system that works probabilistically and does <em>not</em> understand intent. The model cannot read your mind, cannot infer the unstated, and does not know which of the many plausible continuations you actually want. A prompt is how you tell it.</p>
+
+     <div class="callout note"><div class="cap"><span class="dot"></span>How prompting connects to the thesis</div><p>A good prompt is <strong>supervision at the input point.</strong> By specifying role, context, task, format, and constraints, you narrow the space of outputs the model will consider — and a narrower output space is a more verifiable one. Where Page&nbsp;1’s review happens <em>after</em> generation (checking the output), prompting exercises control <em>before</em> generation (shaping what can be produced). The two are the same discipline applied at two ends of the same step.</p></div>
+
+     <h3>Why formulation matters, given next-token prediction</h3>
+     <p>Recall from Page&nbsp;1 that the model predicts each token from the preceding context. Your prompt <em>is</em> that context. A vague prompt leaves the distribution over continuations wide and shallow, so the model falls back on the most generic, average-of-the-internet response — and, when under-specified, is more prone to fill gaps with fabrication. A precise prompt concentrates probability on the continuations you actually want, which both improves relevance and, crucially, makes the result easier to check against what you asked for. Formulation is not decoration on top of the model; it is the lever by which the model’s mechanism is steered.</p>
+
+     <h3>The anatomy of an effective prompt</h3>
+     <p>An effective prompt is assembled from elements, each with a distinct function. They are not a checklist to recite but components whose <em>purpose</em> you should understand well enough to include only those a given task needs.</p>
+     <ul>
+       <li><strong>Persona / role.</strong> Tells the model which region of its learned distribution to draw on (“a policy analyst reviewing a regulatory impact assessment”), shifting register and default assumptions toward the relevant expertise.</li>
+       <li><strong>Context.</strong> Supplies the situation and the material the task operates on — the audience, the purpose, and, where possible, the actual source text. Context is where you anchor the model to <em>your</em> facts rather than its priors.</li>
+       <li><strong>Specific task.</strong> States precisely what to do, as a single well-defined action (“identify the three strongest objections,” not “tell me about the objections”). Ambiguity here is the commonest cause of disappointing output.</li>
+       <li><strong>Desired output format.</strong> Specifies the shape of the result (a table with named columns, a paragraph of a given length, a list of questions). Format constraints make the output easier to slot into your system and easier to review.</li>
+       <li><strong>Constraints.</strong> States the boundaries — length, scope, what to avoid, what must be preserved (“use only the supplied text; if the answer is not present, say so”). Constraints are where much of the supervision lives.</li>
+       <li><strong>Source / examples.</strong> Grounds the task in provided material and, where helpful, in worked examples of the desired output. This is the single most powerful element for reducing fabrication.</li>
+     </ul>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 230" role="img" aria-label="A diagram of prompt anatomy: persona, context, task, format, constraints and source narrowing the output space.">
+           <g font-size="11">
+             <rect x="20" y="20" width="150" height="30" rx="7" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="95" y="40" text-anchor="middle">persona / role</text>
+             <rect x="20" y="56" width="150" height="30" rx="7" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="95" y="76" text-anchor="middle">context</text>
+             <rect x="20" y="92" width="150" height="30" rx="7" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="95" y="112" text-anchor="middle">specific task</text>
+             <rect x="20" y="128" width="150" height="30" rx="7" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="95" y="148" text-anchor="middle">output format</text>
+             <rect x="20" y="164" width="150" height="30" rx="7" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="95" y="184" text-anchor="middle">constraints</text>
+             <rect x="20" y="200" width="150" height="30" rx="7" fill="var(--warm-soft)" stroke="#E0C79B"/><text x="95" y="220" text-anchor="middle">source / examples</text>
+           </g>
+           <g stroke="var(--accent)" stroke-width="1.3" fill="none">
+             <path d="M170 35 C 280 60, 300 110, 360 118"/>
+             <path d="M170 71 C 280 90, 300 112, 360 120"/>
+             <path d="M170 107 H360"/>
+             <path d="M170 143 C 280 130, 300 122, 360 122"/>
+             <path d="M170 179 C 280 155, 300 130, 360 124"/>
+             <path d="M170 215 C 280 175, 300 135, 360 126" stroke="var(--warm)"/>
+           </g>
+           <path d="M360 120 L500 120" stroke="var(--accent)" stroke-width="6" marker-end="url(#ahfun)"/>
+           <defs><marker id="ahfun" markerWidth="10" markerHeight="10" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--accent)"/></marker></defs>
+           <rect x="510" y="86" width="230" height="70" rx="12" fill="var(--accent)"/>
+           <text x="625" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">a narrowed output space</text>
+           <text x="625" y="136" text-anchor="middle" font-size="10.5" fill="#DDEBE8">more relevant · more verifiable</text>
+         </svg>
+       </div>
+       <figcaption><b>Figure 2.3.</b> Prompt anatomy. Each element constrains the model’s continuation; together they narrow the output space to something both more relevant and easier to verify. Grounding in a source (the warm element) does the most to suppress fabrication.</figcaption>
+     </figure>
+
+     <h3>Grounded techniques</h3>
+     <p>Three techniques rest on well-established findings rather than folklore. <strong>Few-shot examples</strong> — showing the model two or three instances of the input-to-output mapping you want — reliably improve conformity to a desired pattern, exploiting the model’s capacity to generalise from examples in context.<a href="#p2-r9" class="ref">9</a> <strong>Step-by-step reasoning</strong> — asking the model to work through intermediate steps before answering — improves performance on tasks that require reasoning, because it allocates the generation to the sub-steps rather than leaping to a conclusion.<a href="#p2-r10" class="ref">10</a> And <strong>iterative refinement</strong> — treating the first output as a draft to critique and re-prompt rather than a finished product — matches the loop structure of research itself: you are simply running a fast, cheap iteration under supervision.</p>
+
+     <h3>Research-specific applications — and their hard limit</h3>
+     <p>In social-science and public-policy work, prompting is useful for a bounded set of tasks: <strong>framing literature-review questions</strong> (turning a vague interest into precise, searchable sub-questions), <strong>structuring an argument</strong> (proposing an ordering of claims for you to evaluate and rearrange), <strong>grammar and clarity checking</strong> of your own prose, and <strong>drafting interview questions</strong> for you to refine against your protocol and ethics approval. In every case the same limit holds, and it is worth stating without hedging: <em>no prompt, however sophisticated, removes your duty to verify, and none shifts authorship away from you.</em> A better prompt narrows the output space; it never converts unverified output into fact, and it never makes the model an author.</p>
+
+     <h3>Weak prompt → improved prompt</h3>
+     <p>The improvement is easiest to see by comparison. In each pair below, read the weak prompt first and notice what the model is left to guess; then read the improved prompt and notice how each added element removes a degree of freedom.</p>
+
+     <div class="promptpair">
+       <div class="promptbox weak"><span class="lab">weak</span>Summarise the literature on digital public infrastructure.</div>
+       <div class="promptbox strong"><span class="lab">improved</span>You are a public-policy researcher.
+Using ONLY the three articles I have pasted below, produce a 200-word synthesis that (a) states where the authors agree on how to define digital public infrastructure and (b) names one point of disagreement. Do not introduce sources beyond these three; if a claim is not supported by the pasted text, omit it.
+[paste articles]</div>
+     </div>
+
+     <div class="promptpair">
+       <div class="promptbox weak"><span class="lab">weak</span>Give me some sources on AI regulation.</div>
+       <div class="promptbox strong"><span class="lab">improved</span>Suggest five search queries and five candidate author/topic leads I could use to find peer-reviewed work on comparative AI regulation in the EU and Indonesia (2021 onward). Do NOT output citations as if they were verified — label each as an unverified lead for me to check in a database.</div>
+     </div>
+
+     <div class="promptpair">
+       <div class="promptbox weak"><span class="lab">weak</span>Make my argument better.</div>
+       <div class="promptbox strong"><span class="lab">improved</span>Here is my argument that co-design improves the legitimacy of digital public services [paste]. Acting as a sceptical reviewer, list the three strongest objections a political scientist could raise, and for each note what evidence would answer it. Do not rewrite my text; return only the objections as a numbered list.</div>
+     </div>
+
+     <div class="promptpair">
+       <div class="promptbox weak"><span class="lab">weak</span>Write interview questions about e-government.</div>
+       <div class="promptbox strong"><span class="lab">improved</span>Draft eight semi-structured interview questions for mid-level civil servants about their experience of a new digital welfare system. Context: qualitative study, interpretive approach, 45-minute interviews. Constraints: open-ended, non-leading, avoid jargon, no yes/no questions. I will edit these against my approved ethics protocol.</div>
+     </div>
+
+     <h3>Common mistakes and misconceptions</h3>
+     <ul>
+       <li><strong>Treating output as fact.</strong> The most damaging error: mistaking fluency for verification. The prompt shapes the output; it does not certify it.</li>
+       <li><strong>Under-specifying and blaming the model.</strong> Vague prompts yield generic results; the fix is usually a missing constraint or source, not a “better” model.</li>
+       <li><strong>Believing a magic phrase exists.</strong> There is no incantation. Clarity of intent, context, and constraint is the whole of the skill.</li>
+       <li><strong>Assuming a good prompt cancels disclosure.</strong> It does not. Sophistication of prompting is irrelevant to the obligation to disclose AI use to a journal.</li>
+       <li><strong>Forgetting the loop.</strong> A first output is a draft. Iterating on it under review is the method, not a sign of failure.</li>
+     </ul>
+
+     <div class="callout def"><div class="cap"><span class="dot"></span>Three connections to keep in view</div><p><strong>To hallucination:</strong> prompts that anchor the model to a supplied source suppress fabrication, because the model is steered to work from your text rather than its priors. <strong>To journal disclosure:</strong> however sophisticated the prompt, the use must still be disclosed and the output still verified — prompting changes the quality of the draft, not your obligations. <strong>To the work system:</strong> a prompt is one part of a flow whose output is still reviewed as a diff against a canonical source; it narrows what enters, but the after-the-fact review does not disappear.</p></div>
+   <p>Here is that anatomy applied to the task in front of you: pulling structured information out of a paper so it can go into your triage table. Notice the prompt is deliberately a &ldquo;dumb&rdquo; extractor &mdash; verbatim only, exhaustive, page-numbered, with no summarising &mdash; because paraphrase is where an AI quietly invents.</p>
+     <pre class="promptbox" style="background:var(--paper-2);border:1px solid var(--rule)">You are a meticulous research assistant.
+From the attached article, extract &mdash; using ONLY verbatim
+excerpts, as exhaustively as possible &mdash; and mark each with
+its page number:
+  &bull; full APA reference
+  &bull; research question(s)
+  &bull; variables / relationships (dependent &amp; independent)
+  &bull; theoretical lens / key concepts
+  &bull; method + empirical setting
+  &bull; core findings and conclusion
+  &bull; [a field-specific question of your own]
+Do NOT summarise, synthesise, or paraphrase. Quote only.
+If something is absent, write 'not stated'.</pre>
+     <p>Upload one paper&rsquo;s PDF, paste this, and you get one row of the table that comes next. The same six moves &mdash; persona, context, task, format, constraints, source-grounding &mdash; are what make it reliable enough to trust after a quick check.</p>
+   </section>
+   <section class="sec" id="p2-triage">
+     <h2><span class="h-num">2.5</span>The triage table</h2>
+     <p>This is the scanning layer. Extract the same handful of fields from every paper into one wide, shallow table &mdash; one row per paper &mdash; so you can read the whole field side by side. It is disposable scratch work, and it lives <strong>outside the vault</strong>: a local CSV (which keeps it sovereign) or a Google Sheet. A hundred papers would drown Obsidian; only the survivors will enter it.</p>
+     <p>An interpretive schema, tuned for public-policy and social-science work rather than pure quantitative extraction, might use these columns: <em>reference &middot; research question &middot; variables and relationships (dependent and independent, understood as conceptual as well as measured) &middot; theoretical lens or key concepts &middot; method and empirical setting &middot; core findings &middot; page-anchored quotes &middot; relevance to my angle &middot; gap or limitation noted.</em></p>
+     <div class="tablewrap"><table class="tbl">
+       <caption>Table 2.1 &mdash; What a triage row looks like. Every cell is a short <em>verbatim</em> excerpt with its page number &mdash; the AI&rsquo;s job here is to quote, not to summarise. A real row would be more exhaustive.</caption>
+       <thead><tr><th>Reference</th><th>Research question</th><th>Method + setting</th><th>Verbatim excerpt (page)</th></tr></thead>
+       <tbody>
+         <tr><td class="fn">Margetts &amp; Dunleavy 2013</td><td>not stated as a single question</td><td>conceptual review; advanced industrial states</td><td>&ldquo;networking effects are centralising&rdquo; (p.&nbsp;&#8225;)</td></tr>
+         <tr><td class="fn">Dunleavy et al. 2006</td><td>not stated as a single question</td><td>comparative analysis; OECD governments</td><td>&ldquo;Isocracy is self-government, going beyond simple disintermediation&rdquo; (p.&nbsp;487)</td></tr>
+         <tr><td class="fn">Mergel et al.</td><td>how co-production unfolds across its phases</td><td>interviews with senior public servants</td><td>&ldquo;five distinct co-production phases&rdquo; (p.&nbsp;&#8225;)</td></tr>
+       </tbody>
+     </table></div>
+     <p style="font-size:.86rem;color:var(--ink-soft)">&#8225; Your source excerpt did not show the page for these; confirm it against the PDF &mdash; which is exactly the verify step this table teaches.</p>
+     <div class="callout note"><div class="cap"><span class="dot"></span>Why verbatim, and why the page number</div><p>Paraphrase is where an AI quietly invents. If the cell is a quote with a page number, you can check it in seconds and you never lose the author&rsquo;s exact wording &mdash; which is what you will need when you write. Where a paper does not state something (a research question, say), the honest cell is &ldquo;not stated&rdquo;, not a guess.</p></div>
+     <div class="callout warn"><div class="cap"><span class="dot"></span>This is not yet an annotated bibliography</div><p>What this step produces is <em>descriptive</em> extraction &mdash; often loosely, and wrongly, called an &ldquo;AI annotated bibliography.&rdquo; It records what each paper says. The real annotated bibliography &mdash; where <em>you</em> evaluate the work &mdash; comes later (&sect;2.9). Keep the two apart in your mind.</p></div>
+   </section>
+   <section class="sec" id="p2-extract">
+     <h2><span class="h-num">2.6</span>Choosing an extraction tool (none is perfect)</h2>
+     <p>Many tools can fill the triage table, and the honest position is that none is perfect &mdash; they trade control against convenience in different ways. Match the tool to what you actually need at this step, and treat the list below as current at the time of writing, since these products change quickly.</p>
+     <div class="tablewrap"><table class="tbl">
+       <caption>Table 2.2 &mdash; Extraction tools for the triage step, and their trade-offs</caption>
+       <thead><tr><th>Tool</th><th>Best for</th><th>Where to be careful</th></tr></thead>
+       <tbody>
+         <tr><td class="fn">General assistants (ChatGPT, Claude &mdash; web)</td><td>Your exact schema, in verbatim quotes with page numbers &mdash; full control through the prompt.</td><td>One paper at a time; can still misattribute, so verify. Claude is stricter than ChatGPT on exhaustive verbatim extraction.</td></tr>
+         <tr><td class="fn">SciSpace</td><td>A comparison table with custom columns run across many PDFs at once, exportable to CSV or RIS.</td><td>Output is AI-paraphrased rather than verbatim, and its database search is not always reproducible.</td></tr>
+         <tr><td class="fn">NotebookLM</td><td>Interrogating your own library: grounded answers that cite the exact passage, and spotting contradictions across many papers.</td><td>It is question-and-answer, not a clean per-paper table, and its citations can mismatch pages &mdash; validate them.</td></tr>
+         <tr><td class="fn">Elicit</td><td>Structured, systematic-review-style extraction columns across large sets, with provenance.</td><td>Oriented toward empirical and quantitative fields; volume sits behind a paid tier.</td></tr>
+       </tbody>
+     </table></div>
+     <div class="callout def"><div class="cap"><span class="dot"></span>What stays constant, whichever you choose</div><p>The tool matters less than three invariants. <strong>Ground it on the actual PDF</strong> (upload the paper; do not let the model work from memory). <strong>Demand traceable output</strong> &mdash; verbatim excerpts marked with page numbers. And <strong>verify anything you keep</strong> against the source. This is the supervision principle from Page&nbsp;1, applied at the input.</p></div>
+   </section>
+   <section class="sec" id="p2-gap">
+     <h2><span class="h-num">2.7</span>Finding the gap &mdash; the <em>merenung</em></h2>
+     <p>Now you sit with the table for a day or two and read across the rows. Patterns emerge, and &mdash; more importantly &mdash; silences: a question no one has asked, a setting no one has studied, an assumption everyone shares. That absence is your gap; ideally it is both ontological and epistemological, though one is usually enough for a year&rsquo;s work.</p>
+     <div class="callout activity"><div class="cap"><span class="dot"></span>This is the human part</div><p>There is no shortcut here, and no tool that finds the gap for you. The table makes the silence <em>visible</em>; you still have to <em>see</em> it. This is the contemplative centre of the whole workflow &mdash; the reason the wide net was worth casting at all.</p></div>
+   </section>
+   <section class="sec" id="p2-annobib">
+     <h2><span class="h-num">2.8</span>The annotated bibliography: from description to evaluation</h2>
+     <p>Here is the distinction that trips people up. The triage extract (&sect;2.5) <em>describes</em> &mdash; it records what a paper says. A scholarly <strong>annotated bibliography</strong> <em>evaluates</em> &mdash; it records what <em>you</em> think of the work: its quality, its authority, its relevance, and how it bears on your gap. One is the machine&rsquo;s output; the other is your judgement, and only the second is scholarship.</p>
+     <p>A useful shape, following the widely taught UNSW model, is a citation followed by a short annotation that (i) states the work&rsquo;s purpose and scope, (ii) notes its method and the authority of its authors, (iii) evaluates its usefulness and limitations, and (iv) says how it fits your own project. You write these for the 10&ndash;20 papers you actually read deeply, not for the whole hundred. It is both a thinking discipline and, in many programmes, a required deliverable.</p>
+     <div class="callout note"><div class="cap"><span class="dot"></span>In the vault, this writes itself</div><p>Once each paper you read deeply has a literature note carrying its citation and your annotation, the annotated bibliography is a <em>generated view</em> of those notes &mdash; never a document you maintain by hand. The mechanics live on <a data-goto="page3">Page&nbsp;3</a>.</p></div>
+   </section>
+   <section class="sec" id="p2-deep">
+     <h2><span class="h-num">2.9</span>Reading deeply: from Zotero highlights to notes</h2>
+     <p>The survivors &mdash; the 10&ndash;20 papers that speak to your gap &mdash; now get read properly, and this is where Zotero earns its place a second time. Read the PDF <strong>inside Zotero</strong>, highlighting and annotating as you go; then extract those annotations into a note. With the Zotero&ndash;Obsidian pipeline, your highlighted quotes flow straight into the paper&rsquo;s Obsidian literature note, already carrying the citekey and page number. You are not retyping quotes &mdash; you are <em>harvesting</em> them.</p>
+     <p>From there the note grows in your own words: your annotation (&sect;2.9), the concepts the paper raises, and &mdash; captured the moment they strike you &mdash; your own <strong>argument notes</strong>, kept strictly separate from what the source said. The division of labour stays clean throughout: <strong>Zotero owns the PDF and the citation; Obsidian owns your understanding.</strong> The full note system is the subject of <a data-goto="page3">Page&nbsp;3</a>.</p>
+   </section>
+   <section class="sec" id="p2-draft">
+     <h2><span class="h-num">2.10</span>Drafting is assembling</h2>
+     <p>Because your claims are already written as short, self-contained sentences with their evidence attached, drafting becomes <em>stitching</em> rather than composing. You arrange the pieces, smooth the joins, and the citations are already in place. Where a claim lives in an argument note, you can <em>embed</em> it, so that improving the note improves the draft. The draft is a <strong>view</strong> of your thinking &mdash; safe to cut and rewrite, never itself a source of truth.</p>
+   </section>
+   <section class="sec" id="p2-matrix">
+     <h2><span class="h-num">2.11</span>Automation points and supervision levels</h2>
+     <p>Not every component of the system warrants the same treatment. The governing principle is <strong>proximity to the scientific claim</strong>: the closer a piece of work sits to your findings and your argument, the stricter the review, regardless of how convenient automation would be. Formatting a bibliography is far from the claim; asserting what the data show <em>is</em> the claim. Supervision is therefore best pictured not as on/off but as a gradient.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 150" role="img" aria-label="A supervision-gradient bar from light review far from the claim to strict review near the claim.">
+           <defs><linearGradient id="grad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#CBDFDB"/><stop offset="0.5" stop-color="#E4C88C"/><stop offset="1" stop-color="#C98C7E"/></linearGradient></defs>
+           <rect x="40" y="40" width="680" height="30" rx="15" fill="url(#grad)"/>
+           <text x="40" y="30" font-size="11" fill="var(--accent-2)" font-weight="700">far from the claim</text>
+           <text x="720" y="30" text-anchor="end" font-size="11" fill="var(--danger)" font-weight="700">near the claim</text>
+           <g font-size="10.5" fill="var(--ink)">
+             <line x1="90" y1="70" x2="90" y2="86" stroke="var(--ink-soft)"/><text x="90" y="102" text-anchor="middle">format</text><text x="90" y="116" text-anchor="middle" fill="var(--ink-soft)">light</text>
+             <line x1="250" y1="70" x2="250" y2="86" stroke="var(--ink-soft)"/><text x="250" y="102" text-anchor="middle">copy-edit prose</text><text x="250" y="116" text-anchor="middle" fill="var(--ink-soft)">light–medium</text>
+             <line x1="430" y1="70" x2="430" y2="86" stroke="var(--ink-soft)"/><text x="430" y="102" text-anchor="middle">summarise source</text><text x="430" y="116" text-anchor="middle" fill="var(--ink-soft)">medium</text>
+             <line x1="600" y1="70" x2="600" y2="86" stroke="var(--ink-soft)"/><text x="600" y="102" text-anchor="middle">cite / interpret</text><text x="600" y="116" text-anchor="middle" fill="var(--danger)">strict</text>
+             <line x1="700" y1="70" x2="700" y2="86" stroke="var(--ink-soft)"/><text x="700" y="102" text-anchor="middle">state finding</text><text x="700" y="116" text-anchor="middle" fill="var(--danger)">not delegated</text>
+           </g>
+         </svg>
+       </div>
+       <figcaption><b>Figure 2.4.</b> Supervision as a gradient. Review intensity rises with proximity to the scientific claim; the far end (stating a finding) is not delegated at all. Convenience never moves a task left on this bar.</figcaption>
+     </figure>
+
+     <div class="tablewrap">
+       <table class="tbl">
+         <caption>Table 2.3 — A supervision matrix: what may be automated, per component</caption>
+         <thead><tr><th>Component (hub node)</th><th>What AI may do</th><th>Supervision level</th><th>Human keeps</th></tr></thead>
+         <tbody>
+           <tr><td class="fn">Formatting / typesetting</td><td>Regenerate outputs, fix layout</td><td><span class="badge lo">light — glance</span></td><td>Final visual check</td></tr>
+           <tr><td class="fn">Prose in your own words</td><td>Grammar, clarity, tightening</td><td><span class="badge lo">light — read diff</span></td><td>Voice and meaning</td></tr>
+           <tr><td class="fn">Notes / summaries of sources</td><td>Draft summaries of supplied text</td><td><span class="badge mid">medium — check faithfulness</span></td><td>Fidelity to source</td></tr>
+           <tr><td class="fn">Analysis code</td><td>Draft and debug scripts</td><td><span class="badge mid">medium — run &amp; read</span></td><td>Correctness of method</td></tr>
+           <tr><td class="fn">References</td><td>Suggest and format leads</td><td><span class="badge hi">strict — verify each</span></td><td>Existence &amp; accuracy of every cite</td></tr>
+           <tr><td class="fn">Interpretation of results</td><td>Propose framings to react to</td><td><span class="badge hi">strict — author judgement</span></td><td>The interpretation itself</td></tr>
+           <tr><td class="fn">The finding / the claim</td><td>Nothing</td><td><span class="badge hi">not delegated</span></td><td>Everything</td></tr>
+         </tbody>
+       </table>
+     </div>
+   </section>
+   <section class="sec" id="p2-tools">
+     <h2><span class="h-num">2.12</span>Tools, in depth</h2>
+     <p>With the architecture fixed, tools can be evaluated for the role they play in it rather than for their marketing. The table below treats the principal AI functions with their strengths and — the part usually omitted — their limitations, and derives two operating rules from a single, well-documented weakness.</p>
+
+     <div class="tablewrap">
+       <table class="tbl">
+         <caption>Table 2.4 — AI tools by function, with strengths and limitations for a supervised system</caption>
+         <thead><tr><th>Function</th><th>Strength</th><th>Limitation to design around</th><th>Review load</th></tr></thead>
+         <tbody>
+           <tr><td class="fn">Language editing</td><td>Fast, competent grammar and clarity work on your own prose</td><td>Can alter meaning or flatten voice; may “correct” domain terms</td><td><span class="badge lo">light</span></td></tr>
+           <tr><td class="fn">Summarise a source you supply</td><td>Good at compression of provided text</td><td>Faithfulness errors: quietly overstates or misattributes</td><td><span class="badge mid">medium</span></td></tr>
+           <tr><td class="fn">Draft from an outline</td><td>Breaks blank-page paralysis; produces a reactable draft</td><td>Invents specifics; smooth prose masks thin content</td><td><span class="badge mid">medium</span></td></tr>
+           <tr><td class="fn">Code / data analysis</td><td>Accelerates scripting and debugging</td><td>Subtle logic errors; plausible but wrong transformations</td><td><span class="badge mid">medium</span></td></tr>
+           <tr><td class="fn">Find literature / citations</td><td>Surfaces leads and framings quickly</td><td><strong>Confidently fabricates references</strong> at non-negligible rates</td><td><span class="badge hi">strict</span></td></tr>
+           <tr><td class="fn">Generate a finding / claim</td><td>—</td><td>Not a permitted use; findings are the researcher’s, from data</td><td><span class="badge hi">off-limits</span></td></tr>
+         </tbody>
+       </table>
+     </div>
+
+     <div class="callout warn"><div class="cap"><span class="dot"></span>The citation weakness, quantified</div><p>The rate at which these systems produce confident but wrong citations is not marginal. Peer-reviewed audits have reported fabrication of roughly half of GPT-3.5’s references and about 18% of GPT-4’s, with many surviving references still carrying substantive errors;<a href="#p2-r2" class="ref">2</a> newer models tested in 2025 still fabricated on the order of one citation in five, worse for niche topics.<a href="#p2-r3" class="ref">3</a> Fabricated citations frequently carry real author names and well-formed DOIs, which is exactly what lets them pass a glance.</p></div>
+
+     <p>Two non-negotiable rules follow directly. The <strong>verification rule</strong>: every AI-suggested reference is an <em>unverified lead</em> until you have confirmed it against the actual record — the publisher, a database, the paper itself — and no formatting polish substitutes for that check. The <strong>privacy rule</strong>: unpublished manuscripts, confidential data, and material under review do not go into external AI services, both because doing so may breach the confidentiality owed to that work<a href="#p2-r8" class="ref">8</a> and because it moves your canonical material outside your data-ownership boundary. Where such work must be processed, it stays inside the boundary — local models or tools you control.</p>
+   </section>
+   <section class="sec" id="p2-triggers">
+     <h2><span class="h-num">2.13</span>An operational mindset: the trigger map</h2>
+     <p>A system only works if maintaining it is a habit rather than a project. The habit is captured by a set of triggers of the form <em>“after doing X, update Y.”</em> What makes the trigger map coherent — and worth memorising as a single idea — is that every trigger points <strong>upstream, to the canonical source.</strong> You never patch the output; you update the source and regenerate. From which the only real rule of the whole system can be stated in one line: <strong>if an output is wrong, you fix the source.</strong></p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 220" role="img" aria-label="A trigger map: several actions all pointing to update the upstream source.">
+           <defs><marker id="aht" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--warm)"/></marker></defs>
+           <rect x="300" y="86" width="170" height="48" rx="12" fill="var(--accent)"/><text x="385" y="108" text-anchor="middle" font-size="12.5" font-weight="700" fill="#fff">the canonical source</text><text x="385" y="125" text-anchor="middle" font-size="10" fill="#DDEBE8">(always the target of an update)</text>
+           <g font-size="10.5">
+             <rect x="40" y="20" width="200" height="30" rx="7" fill="#fff" stroke="var(--rule-2)"/><text x="52" y="40" font-size="10.5">read a paper → update notes + refs</text>
+             <rect x="40" y="95" width="200" height="30" rx="7" fill="#fff" stroke="var(--rule-2)"/><text x="52" y="115" font-size="10.5">get new data → update data node</text>
+             <rect x="40" y="170" width="200" height="30" rx="7" fill="#fff" stroke="var(--rule-2)"/><text x="52" y="190" font-size="10.5">reviewer comment → update source</text>
+             <rect x="520" y="20" width="200" height="30" rx="7" fill="#fff" stroke="var(--rule-2)"/><text x="532" y="40" font-size="10.5">refine an argument → update draft source</text>
+             <rect x="520" y="95" width="200" height="30" rx="7" fill="#fff" stroke="var(--rule-2)"/><text x="532" y="115" font-size="10.5">fix a typo in the PDF? → no: fix source</text>
+             <rect x="520" y="170" width="200" height="30" rx="7" fill="#fff" stroke="var(--rule-2)"/><text x="532" y="190" font-size="10.5">new finding → update finding node</text>
+           </g>
+           <g stroke="var(--warm)" stroke-width="1.5" fill="none">
+             <path d="M240 35 C 290 55, 300 80, 320 92" marker-end="url(#aht)"/>
+             <path d="M240 110 H298" marker-end="url(#aht)"/>
+             <path d="M240 185 C 290 165, 300 140, 320 128" marker-end="url(#aht)"/>
+             <path d="M520 35 C 480 55, 470 80, 452 92" marker-end="url(#aht)"/>
+             <path d="M520 110 H472" marker-end="url(#aht)"/>
+             <path d="M520 185 C 480 165, 470 140, 452 128" marker-end="url(#aht)"/>
+           </g>
+         </svg>
+       </div>
+       <figcaption><b>Figure 2.5.</b> The trigger map. Every routine action resolves to an update of the upstream source; outputs are never patched in place. The single rule — <b>if an output is wrong, fix the source</b> — is what keeps the whole system consistent.</figcaption>
+     </figure>
+   </section>
+   <section class="sec" id="p2-lineage">
+     <h2><span class="h-num">2.14</span>From multiple studies to publication: one lineage</h2>
+     <p>The architecture pays its largest dividend across the publication lifecycle. A conference paper, a journal article, and a thesis chapter on the same work are commonly maintained as three separate documents — which guarantees that a correction made in one fails to reach the others, and that the three slowly contradict one another. Under a single source of truth they are instead <strong>three views of one lineage</strong>, each regenerated from the same canonical sources. The conference paper is an early, narrower view; the journal article a fuller one; the thesis chapter the most complete. A fix to a shared finding propagates to all three along the dependency edges, and the labour of “porting” results between documents — much of it the very drudgery that tempts unsupervised delegation — largely disappears.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 210" role="img" aria-label="A lineage flow showing shared sources feeding a conference paper, journal article and thesis chapter.">
+           <defs><marker id="ahl" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--accent)"/></marker></defs>
+           <rect x="30" y="80" width="130" height="50" rx="10" fill="var(--accent)"/><text x="95" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">shared sources</text><text x="95" y="119" text-anchor="middle" font-size="10" fill="#DDEBE8">data · findings · refs</text>
+           <g stroke="var(--accent)" stroke-width="1.6" fill="none">
+             <path d="M160 95 C 230 70, 250 62, 300 62" marker-end="url(#ahl)"/>
+             <path d="M160 105 C 260 108, 300 110, 340 110" marker-end="url(#ahl)"/>
+             <path d="M160 118 C 260 150, 330 158, 400 158" marker-end="url(#ahl)"/>
+           </g>
+           <rect x="300" y="42" width="150" height="40" rx="9" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="375" y="66" text-anchor="middle" font-size="11.5">conference paper</text>
+           <rect x="340" y="90" width="150" height="40" rx="9" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="415" y="114" text-anchor="middle" font-size="11.5">journal article</text>
+           <rect x="400" y="138" width="150" height="40" rx="9" fill="var(--accent-soft)" stroke="var(--accent)"/><text x="475" y="162" text-anchor="middle" font-size="11.5">thesis chapter</text>
+           <text x="640" y="70" font-size="10.5" fill="var(--ink-soft)">narrower →</text>
+           <text x="640" y="150" font-size="10.5" fill="var(--ink-soft)">→ fuller</text>
+           <text x="375" y="196" text-anchor="middle" font-size="11" font-style="italic" fill="var(--accent-2)">one lineage, three views — a shared correction reaches all three</text>
+         </svg>
+       </div>
+       <figcaption><b>Figure 2.6.</b> Publication as lineage, not duplication. Conference paper, journal article, and thesis chapter are regenerated views of the same sources at increasing fullness, so consistency is structural rather than manually maintained.</figcaption>
+     </figure>
+   </section>
+   <section class="sec" id="p2-adopt">
+     <h2><span class="h-num">2.15</span>Staged, honest adoption</h2>
+     <p>An honest account must acknowledge a real learning curve. Moving to a source-of-truth, version-controlled, local-first system is not free: there is an initial cost in setting up tools and, more significantly, in changing habits — particularly for those of us whose instinct is to edit the output directly. Attempting the whole architecture at once is the surest way to abandon it. Adopt it in stages, each of which is useful on its own, so that value arrives before mastery does.</p>
+
+     <figure class="fig">
+       <div class="frame">
+         <svg viewBox="0 0 760 150" role="img" aria-label="A stepper showing four stages of adoption.">
+           <line x1="70" y1="70" x2="690" y2="70" stroke="var(--rule-2)" stroke-width="2"/>
+           <g>
+             <circle cx="90" cy="70" r="16" fill="var(--accent)"/><text x="90" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1</text>
+             <circle cx="290" cy="70" r="16" fill="var(--accent)"/><text x="290" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2</text>
+             <circle cx="490" cy="70" r="16" fill="var(--accent)"/><text x="490" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">3</text>
+             <circle cx="670" cy="70" r="16" fill="var(--warm)"/><text x="670" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">4</text>
+           </g>
+           <g font-size="11" fill="var(--ink)" text-anchor="middle">
+             <text x="90" y="34" font-weight="700">One canonical home</text><text x="90" y="112" fill="var(--ink-soft)">move notes + refs</text><text x="90" y="126" fill="var(--ink-soft)">into single sources</text>
+             <text x="290" y="34" font-weight="700">Version control</text><text x="290" y="112" fill="var(--ink-soft)">put sources in Git;</text><text x="290" y="126" fill="var(--ink-soft)">learn to read diffs</text>
+             <text x="490" y="34" font-weight="700">Regenerate outputs</text><text x="490" y="112" fill="var(--ink-soft)">build one view from</text><text x="490" y="126" fill="var(--ink-soft)">source, not by hand</text>
+             <text x="670" y="34" font-weight="700">Supervised AI</text><text x="670" y="112" fill="var(--ink-soft)">edit source in small</text><text x="670" y="126" fill="var(--ink-soft)">batches, review diffs</text>
+           </g>
+         </svg>
+       </div>
+       <figcaption><b>Figure 2.7.</b> A staged adoption path. Each step delivers value alone: a single canonical home tidies your work before any AI enters; version control gives an audit trail; regeneration removes drift; only then does supervised AI editing sit naturally on top.</figcaption>
+     </figure>
+   </section>
+   <section class="sec" id="p2-ethics">
+     <h2><span class="h-num">2.16</span>Ethics and compliance in practice</h2>
+     <p>The architecture is not only efficient; it makes compliance with the publishing rules from Page&nbsp;1 nearly automatic. Because every change to a source lives in <strong>version-control history</strong>, you possess a natural, timestamped record of who — or what — changed what, and when. That history is an <em>audit trail</em>: it supports honest disclosure of AI involvement not as an act of memory or good faith but as a matter of record, and it lets you answer, precisely, which passages were AI-assisted and how they were reviewed. Supervised, small-batch editing and truthful disclosure are, once again, the same practice viewed twice.</p>
+     <p>A second practice concerns material that must leave your boundary — a document shared with a co-author on an external platform, a file uploaded to a collaboration service. Treat any such externally shared document as a disposable <strong>“guest room”</strong>: a regenerated view you are comfortable exposing, never your canonical source. You furnish the guest room from the hub; you do not move the hub into it. If the platform changes its terms, suffers a breach, or simply disappears, you have lost a view, not your work — and you have kept confidential and unpublished material where it belongs.</p>
+     <div class="callout note"><div class="cap"><span class="dot"></span>Disclosure, concretely</div><p>Keep a short, standing note of AI use tied to your version history: the function (e.g. language editing, code drafting), the components touched, and the review performed. When a journal asks for a disclosure statement, you are transcribing a record, not reconstructing one — which is exactly the accountability the publishers require.<a href="#p2-r5" class="ref">5</a><a href="#p2-r6" class="ref">6</a></p></div>
+   </section>
+   <section class="sec" id="p2-sovereignty">
+     <h2><span class="h-num">2.17</span>A closing test: sovereignty</h2>
+     <p>There is a single question that tests whether you have built a system or merely a habit of using tools. <strong>If any one service you rely on disappeared tomorrow — the assistant, the cloud store, the collaboration platform — would your research remain intact?</strong> If the honest answer is no, your canonical sources are living inside something you do not control, and the architecture has not yet been built. If the answer is yes — because your sources are local, plain-text where possible, version-controlled, and yours, with every service reduced to a replaceable spoke — then you have both sovereignty over your work and, not by coincidence, a system in which AI can be used exactly as this workshop recommends: under supervision, at the level of each small piece of work.</p>
+
+     <div class="thesis-band" style="margin-top:1.6rem">
+       <span class="k">Where the two pages meet</span>
+       The supervision the thesis demands and the sovereignty this test measures are the same property of one architecture. A system whose canonical sources you own and regenerate from is a system in which AI’s every contribution arrives as a reviewable diff against something you control — which is what it means to use AI under supervision, one small piece at a time.
+     </div>
+   </section>
+   <div class="refs" id="p2-refs">
+     <h2>References — Page 2</h2>
+     <ol>
+       <li id="p2-r1">Edge, D., Trinh, H., Cheng, N., et al. (2024). <em>From Local to Global: A Graph RAG Approach to Query-Focused Summarization.</em> Microsoft Research. arXiv:2404.16130.</li>
+       <li id="p2-r2">Walters, W. H., &amp; Wilder, E. I. (2023). <em>Fabrication and errors in the bibliographic citations generated by ChatGPT.</em> Scientific Reports 13, 14045. doi:10.1038/s41598-023-41032-5.</li>
+       <li id="p2-r3">Reference-validation analyses of newer models (2025), reporting ~20% citation fabrication overall and higher rates on niche topics (e.g. GPT-4o literature-review audits); consistent with earlier findings in ref. 2.</li>
+       <li id="p2-r4">Huang, L., Yu, W., Ma, W., et al. (2025). <em>A Survey on Hallucination in Large Language Models.</em> ACM Transactions on Information Systems. doi:10.1145/3703155.</li>
+       <li id="p2-r5">International Committee of Medical Journal Editors (ICMJE). (2024–2025 updates). <em>Recommendations… Defining the Role of Authors and Contributors.</em> icmje.org.</li>
+       <li id="p2-r6">Committee on Publication Ethics (COPE). (2023). <em>Authorship and AI Tools: COPE Position Statement.</em> publicationethics.org.</li>
+       <li id="p2-r7">Elsevier (2025). <em>Generative AI and AI-assisted technologies in the writing process — author policy.</em> — permitted with oversight, verification, and disclosure; human responsibility retained.</li>
+       <li id="p2-r8">Lauer, M., Constant, S., &amp; Wernimont, A. (2023). <em>Using AI in Peer Review Is a Breach of Confidentiality.</em> NIH Office of Extramural Research.</li>
+       <li id="p2-r9">Brown, T. B., Mann, B., Ryder, N., et al. (2020). <em>Language Models are Few-Shot Learners.</em> Advances in Neural Information Processing Systems 33. arXiv:2005.14165.</li>
+       <li id="p2-r10">Wei, J., Wang, X., Schuurmans, D., et al. (2022). <em>Chain-of-Thought Prompting Elicits Reasoning in Large Language Models.</em> Advances in Neural Information Processing Systems 35. arXiv:2201.11903.</li>
+       <li id="p2-r11">Morris, M. R., et al. (2024). <em>Levels of AGI</em> (autonomy axis). ICML (PMLR 235). arXiv:2311.02462. — on why greater autonomy raises the importance of oversight design.</li>
+       <li id="p2-r12">Freeman, J. (2025). <em>Student Generative AI Survey.</em> Higher Education Policy Institute / Kortext. — indicative adoption figures; treated as commercial and non-representative.</li>
+     </ol>
+     <div class="disclaimer"><strong>On sources and currency.</strong> Tool limitations and fabrication rates cited here are drawn from peer-reviewed audits available in mid-2026 and will shift as models change; re-verify before relying on any specific figure. Publisher policies are summarised in convergent form — always consult the exact policy of your target journal, which governs.</div>
+   </div>
+   <div class="pagefoot">
+     <a data-goto="page1">← Back to Page 1 · Understanding &amp; Mapping</a>
+     <span>Page 2 of 3 · <span class="kicker-jump">Building Your Research System and Automation</span></span>
+     <a data-goto="page3">Continue to Page 3 · Second Brain with Obsidian →</a>
+   </div>
+  </div>
+ </div></div>
+</main>
+
+<main id="page3" class="page">
+ <div class="wrap"><div class="grid">
+
+  <aside class="toc" aria-label="Contents of page 3">
+   <details open>
+    <summary class="toc-label" style="cursor:pointer;list-style:none">On this page</summary>
+    <ol>
+     <li><a href="#p3-what"><span class="n">3.1</span>What Obsidian is</a></li>
+     <li><a href="#p3-note"><span class="n">3.2</span>A note is just text</a></li>
+     <li><a href="#p3-links"><span class="n">3.3</span>Links, not folders</a></li>
+     <li><a href="#p3-four"><span class="n">3.4</span>The four kinds of note</a></li>
+     <li><a href="#p3-folders"><span class="n">3.5</span>The vault, folder by folder</a></li>
+     <li><a href="#p3-front"><span class="n">3.6</span>Frontmatter</a></li>
+     <li><a href="#p3-embed"><span class="n">3.7</span>Linking &amp; embedding</a></li>
+     <li><a href="#p3-tags"><span class="n">3.8</span>Tags &amp; to-dos</a></li>
+     <li><a href="#p3-views"><span class="n">3.9</span>Plugins &amp; views</a></li>
+     <li><a href="#p3-where"><span class="n">3.10</span>Where it fits</a></li>
+     <li><a href="#p3-not"><span class="n">3.11</span>What it is not</a></li>
+     <li><a href="#p3-start"><span class="n">3.12</span>Getting started</a></li>
+     <li><a href="#p3-living"><span class="n">3.13</span>Living with the vault</a></li>
+    </ol>
+   </details>
+  </aside>
+
+  <div class="content">
+   <p class="eyebrow">Companion · Page 3 of 3</p>
+   <h1 class="page-title">Second Brain with Obsidian</h1>
+   <p class="lede">If you have ever finished reading twenty papers and then, a month later, could not remember <em>which one</em> said the thing you needed — this page is for you. A “second brain” is simply a place where you write things down once, in a way that lets you find and reuse them forever. We build ours in a free program called Obsidian; the confusion nearly always comes from not knowing what it actually is.</p>
+
+   <div class="callout def"><div class="cap"><span class="dot"></span>The one thing to understand first</div><p><strong>Obsidian is not a website, an app you log into, or a cloud service. It is a program that opens an ordinary <em>folder on your own computer</em> — a folder full of plain text files. That folder is called a “vault”.</strong> Nothing is stored elsewhere; nothing is hidden. If you deleted Obsidian tomorrow, the folder and every note in it would still be sitting on your computer, openable in Notepad.</p></div>
+
+   <section class="sec" id="p3-what">
+     <h2><span class="h-num">3.1</span>What Obsidian actually is</h2>
+     <p>Imagine a folder on your laptop called <code>Research-Vault</code>. Inside it are text files: one for each paper you have read, one for each idea you are developing, one for your draft. That folder — with all its notes — is your <strong>vault</strong>. Obsidian is the window you open it through. It adds three things a plain folder cannot: it lets notes <em>link</em> to each other, it shows you those connections, and it lets small helpers (“plugins”) build lists and tables from your notes automatically.</p>
+     <p>That is the whole thing. There is no database, no login, no magic. You are always just editing text files in a folder you own.</p>
+     <figure class="fig"><div class="frame"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A folder on your computer, containing note files, labelled as your vault.">
+  <path d="M40 60 h70 l16 20 h150 a10 10 0 0 1 10 10 v120 a10 10 0 0 1 -10 10 H40 a10 10 0 0 1 -10 -10 V70 a10 10 0 0 1 10 -10 z" fill="#F1E5CE" stroke="#A96E24" stroke-width="2"/>
+  <text x="52" y="98" font-family="system-ui,sans-serif" font-size="14" font-weight="700" fill="#7A4E17">Research-Vault/</text>
+  <g font-family="ui-monospace,Consolas,monospace" font-size="12.5" fill="#22201B">
+    <rect x="58" y="112" width="180" height="26" rx="4" fill="#FFFFFF" stroke="#D9D3C4"/><text x="70" y="129">📄 giest2025.md</text>
+    <rect x="58" y="146" width="180" height="26" rx="4" fill="#FFFFFF" stroke="#D9D3C4"/><text x="70" y="163">📄 Co-creation.md</text>
+    <rect x="58" y="180" width="180" height="26" rx="4" fill="#FFFFFF" stroke="#D9D3C4"/><text x="70" y="197">📄 Draft.md</text>
+  </g>
+  <text x="300" y="120" font-family="system-ui,sans-serif" font-size="15" font-weight="700" fill="#14524E">= your “vault”</text>
+  <text x="300" y="146" font-family="Georgia,serif" font-size="13.5" fill="#5C5749">a normal folder of</text>
+  <text x="300" y="166" font-family="Georgia,serif" font-size="13.5" fill="#5C5749">plain-text notes,</text>
+  <text x="300" y="186" font-family="Georgia,serif" font-size="13.5" fill="#5C5749">on your own computer.</text>
+</svg></div><figcaption><b>Figure 3.1.</b> A vault is a folder; a note is a file. Obsidian is the program that opens the folder and connects the notes inside it.</figcaption></figure>
+   </section>
+
+   <section class="sec" id="p3-note">
+     <h2><span class="h-num">3.2</span>A note is just a text file</h2>
+     <p>Each note is written in <strong>Markdown</strong> — ordinary text with a few light marks that add formatting. You need very little: <code>#</code> at the start of a line makes a heading, <code>-</code> makes a bullet, <code>**words**</code> makes bold. Because it is plain text, the file stays readable forever and in any program.</p>
+     <pre class="promptbox" style="background:var(--paper-2);border:1px solid var(--rule)"># Co-creation
+
+Designing services **with** the people who use them,
+not just for them.
+
+- Only real if it covers the *hidden* design choices.
+- Connects to administrative burden.</pre>
+   </section>
+
+   <section class="sec" id="p3-links">
+     <h2><span class="h-num">3.3</span>The real idea: links, not folders</h2>
+     <p>Here is the shift that makes Obsidian a <em>brain</em> and not just a filing cabinet. In a normal folder system, a note about co-creation sits in one place and a note about a paper in another, and nothing joins them — to see the connection you must remember it. In Obsidian you join two notes by <strong>naming</strong> one inside the other with double square brackets: type <code>[[Co-creation]]</code> and you have made a link. And the connection runs <em>both ways</em> automatically — the Co-creation note now shows that this paper mentions it (a “backlink”), with no extra effort.</p>
+     <p>Do this across your notes and, instead of a stack of isolated summaries, you grow a <strong>network</strong> — a web of ideas that surfaces connections you had forgotten you made. This is what turns an “information hunter”, forever rummaging through papers, into an “information farmer” who harvests links planted months ago.</p>
+     <figure class="fig"><div class="frame"><svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="On the left, isolated notes in folders; on the right, the same notes joined into a linked network.">
+  <text x="20" y="24" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#5C5749">FOLDERS: isolated</text>
+  <g fill="#EFEADF" stroke="#D9D3C4" stroke-width="1.4">
+    <rect x="20" y="40" width="90" height="40" rx="6"/><rect x="20" y="95" width="90" height="40" rx="6"/><rect x="20" y="150" width="90" height="40" rx="6"/>
+  </g>
+  <g font-family="Georgia,serif" font-size="12" fill="#22201B"><text x="34" y="64">paper</text><text x="34" y="119">idea</text><text x="34" y="174">draft</text></g>
+  <line x1="250" y1="30" x2="250" y2="200" stroke="#D9D3C4" stroke-width="1" stroke-dasharray="4 4"/>
+  <text x="300" y="24" font-family="system-ui,sans-serif" font-size="13" font-weight="700" fill="#14524E">LINKS: a network</text>
+  <g stroke="#14524E" stroke-width="2">
+    <line x1="360" y1="70" x2="450" y2="120"/><line x1="450" y1="120" x2="360" y2="170"/><line x1="360" y1="70" x2="360" y2="170"/>
+  </g>
+  <g>
+    <circle cx="360" cy="70" r="28" fill="#E1ECE9" stroke="#14524E" stroke-width="1.6"/>
+    <circle cx="450" cy="120" r="28" fill="#F1E5CE" stroke="#A96E24" stroke-width="1.6"/>
+    <circle cx="360" cy="170" r="28" fill="#E1ECE9" stroke="#14524E" stroke-width="1.6"/>
+  </g>
+  <g font-family="Georgia,serif" font-size="11.5" fill="#22201B" text-anchor="middle"><text x="360" y="74">paper</text><text x="450" y="124">idea</text><text x="360" y="174">draft</text></g>
+</svg></div><figcaption><b>Figure 3.2.</b> The same three notes. On the left they sit in folders, unaware of each other; on the right, <code>[[links]]</code> join them into a network you can walk — which is what makes it a second brain.</figcaption></figure>
+     <div class="callout note"><div class="cap"><span class="dot"></span>You still have folders</div><p>Links do not replace folders — you keep both. Folders say <em>what kind</em> of note something is; links say <em>how notes relate</em>. Use folders lightly for tidiness and links generously for thinking.</p></div>
+   </section>
+
+   <section class="sec" id="p3-four">
+     <h2><span class="h-num">3.4</span>The four kinds of note</h2>
+     <p>You do not need a hundred folders. Almost everything you write is one of four kinds. Keeping them separate — especially keeping <em>your own thinking</em> apart from <em>what others said</em> — is the single most useful habit, so you never present a source’s claim as your own.</p>
+     <div class="tablewrap"><table class="tbl">
+       <caption>Table 3.1 — The four kinds of note</caption>
+       <thead><tr><th>Note type</th><th>Folder</th><th>What it holds</th></tr></thead>
+       <tbody>
+         <tr><td class="fn">Source notes</td><td>10 Sources</td><td>Others’ words — one per paper, imported and left unchanged; your anchor for verification.</td></tr>
+         <tr><td class="fn">Concept notes</td><td>20 Concepts</td><td>One distilled idea each, in <em>your</em> words, linked back to the sources it came from.</td></tr>
+         <tr><td class="fn">Argument notes</td><td>25 Arguments</td><td>Your own claims and hunches, captured while reading, linked to the evidence that supports or complicates them.</td></tr>
+         <tr><td class="fn">Drafts</td><td>40 Drafts</td><td>The outputs you assemble from the three layers above. A draft is never a source of truth.</td></tr>
+       </tbody>
+     </table></div>
+   </section>
+
+   <section class="sec" id="p3-folders">
+     <h2><span class="h-num">3.5</span>The vault, folder by folder</h2>
+     <p>The vault you download (<a href="https://ugm.id/RVault"><code>ugm.id/RVault</code></a>) is not empty &mdash; it comes pre-built with the structure below and seeded with a few example notes, so every view has something to show on the first open. Two conventions make it legible at a glance. The <strong>numbers</strong> order the folders along the pipeline (find &rarr; distil &rarr; argue &rarr; draft &rarr; manage); and an <strong>underscore</strong> in front of a file means &ldquo;do not hand-edit&rdquo; &mdash; it is a generated view or a utility.</p>
+     <pre class="promptbox" style="background:var(--paper-2);border:1px solid var(--rule)">Research-Vault/
+├── 00 — START HERE.md            ← read this first
+├── 01 — TRIAGE (the wide net).md ← how to build the triage table
+├── 10 Sources/          one note per paper you read deeply
+│      _Annotated Bibliography.md     ← generated view
+│      _Reading Queue.md              ← generated view
+├── 20 Concepts/         your distilled ideas, linked to sources
+│      _Concept Index.md              ← generated view
+├── 25 Arguments/        your own claims, linked to evidence
+│      _Argument Index.md             ← generated view
+├── 30 Data/             interviews, documents, coding
+│      _Data Register.md              ← generated view
+├── 40 Drafts/           the sections you assemble
+├── 50 Project/          the backlog and the task board
+│      _Task Board.md                 ← generated view
+├── _templates/          blank note shapes (used by Templater)
+└── _attachments/        PDFs and images</pre>
+     <div class="tablewrap"><table class="tbl">
+       <caption>Table 3.2 &mdash; What lives in each folder, and whether you touch it by hand.</caption>
+       <thead><tr><th>Folder</th><th>What it holds</th><th>You hand-edit it?</th></tr></thead>
+       <tbody>
+         <tr><td class="fn">00 / 01</td><td>your starting guide and the triage how-to</td><td>read, then rarely</td></tr>
+         <tr><td class="fn">10 Sources</td><td>one note per paper you read deeply (frontmatter + your annotation)</td><td>yes</td></tr>
+         <tr><td class="fn">20 Concepts</td><td>your distilled ideas, each linked to its sources</td><td>yes</td></tr>
+         <tr><td class="fn">25 Arguments</td><td>your own claims, linked to the evidence for them</td><td>yes</td></tr>
+         <tr><td class="fn">30 Data</td><td>interviews, documents, and coding</td><td>yes</td></tr>
+         <tr><td class="fn">40 Drafts</td><td>the prose you assemble from the layers above</td><td>yes &mdash; these are outputs</td></tr>
+         <tr><td class="fn">50 Project</td><td>the backlog and the task board</td><td>tick tasks; the board is a view</td></tr>
+         <tr><td class="fn">_templates</td><td>blank shapes for new notes</td><td>rarely</td></tr>
+         <tr><td class="fn">_attachments</td><td>PDFs and images</td><td>drop files in</td></tr>
+         <tr><td class="fn">any <code>_file</code></td><td>a generated view &mdash; bibliography, indexes, board</td><td><strong>never</strong> &mdash; fix the source, the view corrects itself</td></tr>
+       </tbody>
+     </table></div>
+   </section>
+
+   <section class="sec" id="p3-front">
+     <h2><span class="h-num">3.6</span>Frontmatter: labels on a note</h2>
+     <p>At the very top of a note you can put a small block between two lines of three dashes. This is <strong>frontmatter</strong> (or “properties”). It holds labels — the year, the status, the type — that a helper can later read to build lists for you. You write it once; you never make the list by hand.</p>
+     <pre class="promptbox" style="background:var(--paper-2);border:1px solid var(--rule)">---
+type: literature
+year: 2025
+status: read
+concepts: ["[[Co-creation]]"]
+---</pre>
+   </section>
+
+   <section class="sec" id="p3-embed">
+     <h2><span class="h-num">3.7</span>Linking and embedding — the essential skill</h2>
+     <p>Four moves, all just typing. The first three <em>point</em> at things; the fourth <em>pulls a note’s content in</em>.</p>
+     <ul>
+       <li><code>[[Co-creation]]</code> — link to a note. The target shows a backlink automatically.</li>
+       <li><code>[[Co-creation#My angle]]</code> — link straight to a heading inside a note.</li>
+       <li><code>[[Co-creation|co-design]]</code> — an <em>alias</em>: the text reads “co-design” but still links to the note.</li>
+       <li><code>![[Co-design as legitimation]]</code> — an <strong>embed</strong> (note the <code>!</code>): it shows that note’s content <em>inside</em> this one. Edit the original once, and every place it is embedded updates.</li>
+     </ul>
+     <div class="callout activity"><div class="cap"><span class="dot"></span>Why embedding matters</div><p>This is how a draft gets built from pieces. Write each claim once as its own small note, then <em>embed</em> those notes into your draft. Improve a claim in its note, and the draft improves with it — you never copy-paste the same sentence into three places and then have to fix all three.</p></div>
+   </section>
+
+   <section class="sec" id="p3-tags">
+     <h2><span class="h-num">3.8</span>Tags and to-dos</h2>
+     <p>Two more plain-text habits. A <strong>tag</strong> is just <code>#word</code> — a light way to group notes or tasks under a theme (for example <code>#co-creation</code>). A <strong>to-do</strong> is a checkbox line: <code>- [ ] read Haug et al.</code> Give a task a status by adding a tag — <code>#status/todo</code>, <code>#status/doing</code>, <code>#status/done</code> — and a helper gathers all your tasks into one board, sorted by status. Tick the box and it counts as done. No separate app; it is all just text in your notes.</p>
+   </section>
+
+   <section class="sec" id="p3-views">
+     <h2><span class="h-num">3.9</span>Plugins and “views”</h2>
+     <p>Obsidian on its own is a good note editor. The power comes from a few free <strong>community plugins</strong> you install once. For research you need three: <strong>Dataview</strong> (reads your frontmatter and builds lists and tables automatically — your annotated bibliography, reading queue, and task board are all Dataview <em>views</em>), <strong>Templater</strong> (fills a new note from a template so every source note has the same shape), and <strong>Zotero Integration</strong> (imports a paper’s details from Zotero in one click).</p>
+     <div class="callout def"><div class="cap"><span class="dot"></span>What a “view” is</div><p>A <strong>view</strong> is a list the computer builds from your notes — never something you type by hand. If a view looks wrong, you do not fix the view; you fix the note it came from, and the view corrects itself. This is the heart of keeping <em>one source of truth</em>: the note is real; the list is just a window onto it.</p></div>
+   </section>
+
+   <section class="sec" id="p3-where">
+     <h2><span class="h-num">3.10</span>Where Obsidian fits in the whole workflow</h2>
+     <p>This is the part that surprises people: <strong>Obsidian is only the second half of the research workflow.</strong> The first half — casting a wide net of about a hundred papers, triaging them in a table, and spotting the gap — happens <em>outside</em> Obsidian, in Publish or Perish, Zotero, and a spreadsheet (this is the workflow on <a data-goto="page2">Page 2</a>). Only the 10–20 papers that speak to your gap ever become notes in the vault.</p>
+     <figure class="fig"><div class="frame"><svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A funnel: wide net of about 100 papers outside Obsidian, narrowing through the gap to 10-20 papers read deeply inside Obsidian, then a draft.">
+  <text x="20" y="22" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#A96E24">① CAST WIDE — outside Obsidian (~100 papers)</text>
+  <g font-family="Georgia,serif" font-size="12.5" fill="#22201B">
+    <rect x="20" y="34" width="120" height="40" rx="8" fill="#E1ECE9" stroke="#14524E"/><text x="34" y="58">Publish or Perish</text>
+    <rect x="160" y="34" width="90" height="40" rx="8" fill="#E1ECE9" stroke="#14524E"/><text x="176" y="58">Zotero</text>
+    <rect x="270" y="34" width="120" height="40" rx="8" fill="#E1ECE9" stroke="#14524E"/><text x="284" y="58">Triage table</text>
+  </g>
+  <rect x="410" y="34" width="130" height="40" rx="8" fill="#A96E24"/><text x="426" y="58" font-family="system-ui,sans-serif" font-size="12.5" font-weight="700" fill="#fff">find the gap</text>
+  <line x1="475" y1="80" x2="475" y2="108" stroke="#5C5749" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="20" y="130" font-family="system-ui,sans-serif" font-size="12" font-weight="700" fill="#A96E24">② GO DEEP — inside Obsidian (10–20 papers)</text>
+  <g font-family="Georgia,serif" font-size="12.5" fill="#22201B">
+    <rect x="120" y="142" width="130" height="40" rx="8" fill="#E1ECE9" stroke="#14524E"/><text x="134" y="166">Read &amp; take notes</text>
+    <rect x="270" y="142" width="130" height="40" rx="8" fill="#E1ECE9" stroke="#14524E"/><text x="284" y="166">Concepts + args</text>
+    <rect x="410" y="142" width="110" height="40" rx="8" fill="#F1E5CE" stroke="#A96E24"/><text x="424" y="166">Draft</text>
+  </g>
+  <path d="M175 182 q-30 30 -60 34" fill="none" stroke="#5C5749" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="40" y="228" font-family="Georgia,serif" font-size="12.5" font-style="italic" fill="#5C5749">Only the 10–20 survivors ever enter your vault.</text>
+  <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#5C5749"/></marker></defs>
+</svg></div><figcaption><b>Figure 3.3.</b> The funnel. Finding, triaging, and gap-spotting all happen <b>outside</b> Obsidian; only the survivors enter the vault, where you build the argument and draft. If the vault feels empty at first, that is correct — you fill it slowly, with only the papers that earned their place.</figcaption></figure>
+   </section>
+
+   <section class="sec" id="p3-not">
+     <h2><span class="h-num">3.11</span>What Obsidian is <em>not</em></h2>
+     <div class="callout warn"><div class="cap"><span class="dot"></span>Three honest boundaries</div><p><strong>It does not replace Zotero.</strong> Zotero stays your reference manager — it stores the PDFs, gives each paper a citekey, and generates your citations and bibliography when you write. Obsidian holds your <em>understanding</em>. Different jobs; keep both.</p>
+     <p><strong>It is not heavy qualitative-analysis software.</strong> If coding twenty-plus interviews is the core of your method, use NVivo or Atlas.ti for the coding and let the quotes you build on graduate into Obsidian. For a few interviews, Obsidian is plenty.</p>
+     <p><strong>It is not a system to perfect.</strong> Resist building an elaborate note-numbering scheme (you may have heard of “Zettelkasten” — you do not need it). Four folders and plain links are enough. <em>If a system makes you tidy more than you think, it is the wrong system.</em></p></div>
+   </section>
+
+   <section class="sec" id="p3-start">
+     <h2><span class="h-num">3.12</span>Getting started in five steps</h2>
+     <ol>
+       <li><strong>Download Obsidian</strong> (free) from obsidian.md and install it.</li>
+       <li><strong>Download the shared vault</strong> from <a href="https://ugm.id/RVault"><code>ugm.id/RVault</code></a>, unzip it, and in Obsidian choose “Open folder as vault” and point it at that folder.</li>
+       <li><strong>Enable the three plugins</strong> (Settings → Community plugins): Dataview, Templater, Zotero Integration.</li>
+       <li><strong>Open <code>00 — START HERE</code></strong> and follow the five-minute tour.</li>
+       <li><strong>Change one thing</strong> — flip a note’s <code>status</code>, or tick a task — and watch a list rebuild itself. That moment is when it clicks.</li>
+     </ol>
+     <div class="callout def"><div class="cap"><span class="dot"></span>The sovereignty test</div><p>Everything here is plain text on your own disk. If Obsidian, Zotero, or any single service disappeared tomorrow, your notes, data, and drafts would still open in any text editor. That is the whole point of working local-first: the tools are replaceable, but your research — the thing you actually built — is not.</p></div>
+   </section>
+
+   <section class="sec" id="p3-living">
+     <h2><span class="h-num">3.13</span>Living with the vault over time</h2>
+     <p>A good vault is lived in, not maintained. Most of its upkeep is simply using it well; the rest is a handful of light habits that keep it from drifting into a tidy graveyard.</p>
+     <ul>
+       <li><strong>Add, don&rsquo;t reorganise.</strong> A new note goes in the right folder and you move on. Resist renaming folders and re-filing things &mdash; the <code>[[links]]</code>, not the folders, carry the meaning.</li>
+       <li><strong>Never hand-edit a generated view.</strong> If a list looks wrong, fix the note it came from, not the list.</li>
+       <li><strong>One canonical home per fact.</strong> Never copy a fact into a second note; link to the note that owns it. The moment you copy-and-edit, the drift begins.</li>
+       <li><strong>Keep notes atomic.</strong> One idea per concept note, one claim per argument note. When a note grows a second idea, split it in two and link them.</li>
+       <li><strong>Only survivors enter.</strong> The vault stays small on purpose: the hundred papers live in the triage table <em>outside</em> it, and only the ten or twenty you read deeply become notes. A near-empty vault at the start of a project is correct, not a failure.</li>
+       <li><strong>Grow it by using it.</strong> Before you write, open the concept index or walk the graph &mdash; that <em>is</em> the maintenance. You harvest what you planted.</li>
+     </ul>
+     <div class="callout warn"><div class="cap"><span class="dot"></span>Back it up &mdash; it is only text, which is the point</div><p>Because every note is a plain file, backup is easy and worth doing from day one. Two good options: keep the vault in a synced folder (Dropbox, Drive, OneDrive) so it survives a dead laptop; or put it under <strong>Git</strong>, which additionally gives you a full version history &mdash; and that history doubles as your <strong>AI-disclosure audit trail</strong>, showing exactly what changed, when, and where a tool was involved.</p></div>
+     <div class="callout note"><div class="cap"><span class="dot"></span>One vault, or one per project?</div><p>One vault can hold several projects at once &mdash; separate them with folders or a <code>#project</code> tag in <code>50 Project</code> &mdash; or you can start a fresh copy of this structure for each project. Either works; the structure travels. What you should not do is scatter one project across three half-vaults, which breaks the single home that makes the whole thing work.</p></div>
+     <p>And the rule that governs all of the above, one last time: <em>if a system makes you tidy more than you think, it is the wrong system.</em> This structure exists to get out of your way.</p>
+   </section>
+
+   <div class="pagefoot">
+     <a data-goto="page2">← Back to Page 2 · Building &amp; Automation</a>
+     <span>Page 3 of 3 · <span class="kicker-jump">Second Brain with Obsidian</span></span>
+   </div>
+  </div>
+ </div></div>
+</main>
+
+<footer class="site-foot"><div class="wrap" style="padding:0 0 2.4rem">
+  <div style="border-top:1px solid var(--rule);padding-top:1rem;font-family:var(--sans);font-size:.76rem;line-height:1.65;color:var(--ink-soft)">
+    © 2026 Alvi Syahrina. Workshop material for <em>AI for Research &amp; Academic Writing</em>, Department of Management &amp; Public Policy, FISIPOL, Universitas Gadjah Mada.
+    Licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> — you may share and adapt it for any purpose, including commercially, provided you credit the author.
+    Drafted with AI assistance under the author’s direction; all framing, sourcing, and final decisions are the author’s.
+  </div>
+</div></footer>
+
+<script>
+  (function(){
+    var pages = { page1: document.getElementById('page1'), page2: document.getElementById('page2'), page3: document.getElementById('page3') };
+    var navButtons = Array.prototype.slice.call(document.querySelectorAll('.pagenav button'));
+    function show(id){
+      Object.keys(pages).forEach(function(k){
+        var active = (k === id);
+        pages[k].classList.toggle('is-active', active);
+      });
+      navButtons.forEach(function(b){
+        b.setAttribute('aria-current', b.getAttribute('data-goto') === id ? 'true' : 'false');
+      });
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    }
+    document.addEventListener('click', function(e){
+      var t = e.target.closest('[data-goto]');
+      if(!t) return;
+      e.preventDefault();
+      show(t.getAttribute('data-goto'));
+    });
+  })();
+</script>
+</body>
+</html>

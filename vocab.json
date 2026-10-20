@@ -95,4 +95,46 @@
     "tags": ["public policy", "governance"],
     "source": "Rittel & Webber, 1973"
   }
+    {
+    "term": "Public Choice Theory",
+    "definition": "An approach that applies economic reasoning to political decision-making, examining how politicians, bureaucrats, voters, and interest groups respond to incentives and pursue their preferences. Challenges the assumption that public officials automatically act in the collective interest. Influenced NPM through critiques of bureaucratic monopolies and arguments for competition.",
+    "tags": ["public administration", "political science", "economic theory"],
+    "source": "Buchanan & Tullock, 1962"
+  },
+  {
+    "term": "Principal–Agent Theory",
+    "definition": "A theory examining relationships in which a principal delegates tasks or authority to an agent whose interests and information may differ. Explains problems of information asymmetry, adverse selection, and moral hazard, and the use of contracts, monitoring, and incentives to address them. Influenced NPM's emphasis on performance management and contractual accountability.",
+    "tags": ["public administration", "economic theory", "governance"],
+    "source": "Jensen & Meckling, 1976"
+  },
+  {
+    "term": "New Public Management (NPM)",
+    "definition": "A family of public sector reform approaches that emerged prominently in the 1980s and 1990s, emphasising managerial autonomy, competition, performance measurement, efficiency, and market-oriented service delivery. Influenced by public choice and principal–agent theories, NPM challenges traditional bureaucratic administration but can contribute to institutional fragmentation.",
+    "tags": ["public administration", "governance paradigms"],
+    "source": "Hood, 1991"
+  },
+  {
+    "term": "Digital-Era Governance (DEG)",
+    "definition": "A governance paradigm explaining how digital technologies enable the reorganisation of public administration beyond NPM. Its central principles are reintegration of fragmented government functions, needs-based holism that organises services around citizens' needs, and digitisation of administrative processes and service delivery. Does not necessarily imply participatory co-design.",
+    "tags": ["public administration", "governance paradigms", "digital government"],
+    "source": "Dunleavy et al., 2006"
+  },
+  {
+    "term": "New Public Governance (NPG)",
+    "definition": "A governance paradigm that emphasises inter-organisational networks, collaboration, negotiation, and relationships among public, private, and civil society actors in governing and delivering public services. Recognises the plural and interdependent nature of public service provision, contrasting with the hierarchical emphasis of traditional public administration and the competitive orientation of NPM.",
+    "tags": ["public administration", "governance paradigms", "collaborative governance"],
+    "source": "Osborne, 2006"
+  },
+  {
+    "term": "Neo-Weberian State (NWS)",
+    "definition": "A model of public administration that combines traditional Weberian principles, including legality, hierarchy, professional bureaucracy, and the central role of the state, with modernising elements such as citizen orientation, responsiveness, and results-based management. Seeks to modernise public administration without abandoning the institutional foundations of the democratic state.",
+    "tags": ["public administration", "governance paradigms"],
+    "source": "Pollitt & Bouckaert, 2004"
+  },
+  {
+    "term": "Public Value Management (PVM)",
+    "definition": "An approach to public management that emphasises creating public value through government action, democratic deliberation, collaboration, and responsiveness to collective preferences. Evaluates public performance beyond efficiency and outputs by considering what society values, whether public action is legitimate and supported, and whether institutions have the operational capacity to deliver it.",
+    "tags": ["public administration", "governance paradigms", "public value"],
+    "source": "Moore, 1995; Stoker, 2006"
+  }
 ]

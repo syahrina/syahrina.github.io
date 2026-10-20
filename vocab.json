@@ -94,7 +94,7 @@
     "definition": "A social or policy problem that is difficult or impossible to solve due to incomplete information, contradictory requirements, and complex interdependencies. Contrasted with 'tame' problems that have clear solutions.",
     "tags": ["public policy", "governance"],
     "source": "Rittel & Webber, 1973"
-  }
+  },
     {
     "term": "Public Choice Theory",
     "definition": "An approach that applies economic reasoning to political decision-making, examining how politicians, bureaucrats, voters, and interest groups respond to incentives and pursue their preferences. Challenges the assumption that public officials automatically act in the collective interest. Influenced NPM through critiques of bureaucratic monopolies and arguments for competition.",
@@ -102,7 +102,7 @@
     "source": "Buchanan & Tullock, 1962"
   },
   {
-    "term": "Principal–Agent Theory",
+    "term": "Principal-Agent Theory",
     "definition": "A theory examining relationships in which a principal delegates tasks or authority to an agent whose interests and information may differ. Explains problems of information asymmetry, adverse selection, and moral hazard, and the use of contracts, monitoring, and incentives to address them. Influenced NPM's emphasis on performance management and contractual accountability.",
     "tags": ["public administration", "economic theory", "governance"],
     "source": "Jensen & Meckling, 1976"
